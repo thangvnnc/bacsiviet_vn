@@ -1,0 +1,499 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests;
+use App\Question;
+use App\Users;
+use App\UserType;
+use App\Article;
+use App\Deals;
+use App\Doctor;
+use App\Disease;
+use App\SelectQuestion;
+use App\Review;
+use App\Clinic;
+use App\Comment;
+use App\Medicine;
+use App\Answer;
+use App\DoctorSpeciality;
+use App\Catalog;
+class HomeController extends Controller
+{
+	public function __construct()
+	{
+		$article = Article::orderBy('article_id','DESC')->limit(4)->get();
+		view()->share('article',$article);
+	
+		$deals= Deals::orderBy('ranked','DESC')->limit(4)->get();
+		view()->share('deals',$deals);
+	}
+    public function index(){
+        //bac si noi bat        
+        
+        //
+        $clinic =Clinic::all()->take(5);
+    	$doctor = Doctor::all()->take(5);
+    	$questions = SelectQuestion::all()->take(10);
+    	$reviews = Review::all()->take(5);
+    	$specialities = \App\Speciality::all();
+        view()->share('clinic',$clinic);
+    	view()->share('doctors',$doctor);
+    	view()->share('specialities',$specialities);
+    	view()->share('questions',$questions);
+    	view()->share('reviews',$reviews);
+    	return view('home');
+    }
+    public function timkiem(Request $rq){
+    	echo "comming soon";
+    }
+    public function hoibacsi(){
+    	$question = Question::find(1);
+    	//var_dump($question);
+    	//var_dump($question->answers);
+    	return view('hoibacsi');
+    }
+    public function hoibacsiview(Request $rq, $id){
+    	switch($id){
+    		case "tuyen-chon":
+    			return view('hoibacsi-tuyenchon');
+    			break;
+    		case "dat-cau-hoi":
+    			$specialities = \App\Speciality::all();
+    			view()->share('specialities',$specialities);
+    			return view('datcauhoi');
+    			break;
+    		case "danh-sach":
+    			$unanswered = $rq->input('unanswered');
+    			//var_dump($unanswered);
+    			$all = \App\Answer::pluck('question_id')->all();
+    			if($unanswered=="true"){
+    				
+    				$questions = \App\Question::whereNotIn('question_id',$all)->select('*')->get();
+    				var_dump($questions);
+    			}
+    			else{
+    				$questions = \App\Question::whereIn('question_id',$all)->select('*')->get();
+    			}
+    			//$questions = \App\Answer::all();
+    			view()->share('questions',$questions);
+    			return view('hoibacsi_danhsach');
+    			break;
+    		default:
+    			return $this->hoibacsi_showdetail($id);
+    			break;
+    	}
+    
+    }
+    public function hoibacsi_danhsach()
+    {
+        return view('hoibacsi_danhsach');
+    }
+
+    public function hoibacsi_showdetail($id){
+    	$url = explode('-',$id);
+    	$qid = $url[count($url)-1];
+    	$question = Question::find($qid);
+    	//$data[] = $question;
+    	//var_dump($question);
+    	//echo $qid;
+    	return view('hoibacsiview')->with('question',$question);
+    }
+    public function listbaiviet(){
+    	$Catalog = Catalog::all();
+        $baiviet_new=Article::orderBy('article_id','ASC')->limit(1)->first();
+        $baiviets  =Article::orderBy('article_id','ASC')->limit(5)->get();
+        return view('baiviet-list',['baiviets' => $baiviets,'Catalog' => $Catalog,'baiviet_new'=>$baiviet_new])->withPost($baiviets);
+    }
+    public function baivietdetail($id){
+    	echo $id;
+    }
+    
+    public function bacsi_danhsach(Request $rq){
+    	$doctors = Doctor::orderBy('doctor_id','ASC')->paginate(30);
+    	//view()->share('doctors',$doctors);
+    	//var_dump($doctors);
+    	return view('danhsach_bacsi',['doctors'=>$doctors])->withPost($doctors);
+    }
+    
+    public function danhsach_csyt(Request $rq){
+    	$clinics = Clinic::paginate(20);
+    	if($rq->input('specialities')!=null){
+    		$speciality = \App\Speciality::where('specialty_url',$rq->input('specialities'))->firstOrFail();
+    		if($speciality!=null){
+    			$clinic_ids = \App\ClinicSpeciality::where('speciality_id',$speciality->speciality_id)->pluck('clinic_id')->all();
+    			$clinics = Clinic::whereIn('clinic_id',$clinic_ids)->paginate(20);
+    		}
+    		//var_dump($clinicss);
+    	}
+    	//var_dump($clinics[0]->specialities[0]->clinic);
+    	//view()->share('clinics',$clinics);
+    	return view('danhsach_csyt',['clinics'=>$clinics])->withPost($clinics);
+    }
+    public function chitiet_csyt($id){
+    	if($id=='danh-sach'){
+    		$clinics = Clinic::all();
+    		//var_dump($clinics[0]->specialities[0]->clinic);
+    		view()->share('clinics',$clinics);
+    		return view('danhsach_csyt');
+    		
+    	}
+    	
+    	$url = explode('-',$id);
+    	$uid =$url[count($url)-1];
+    	
+    	$comment = Comment::where('clinic_id',$uid)->orderBy('created_at', 'DESC')->get();
+    	$danhgia = Comment::where('feedback_', '>', 0)->count('feedback_');
+    	$sum = Comment::sum('feedback_');
+    	$csyt = \App\Clinic::find($uid);
+    	$chuyenkhoa = \App\ClinicSpeciality::where('clinic_id',$id)->get();
+    	$bacsi = \App\DoctorClinic::where('clinic_id',$uid)->get();
+    	
+    	return view('chitiet_csyt',['cs'=>$csyt,'bacsi'=>$bacsi,'comment'=>$comment,'danhgia'=>$danhgia,'sum'=>$sum]);
+    }
+    public function chuyenkhoa(Request $rq){
+    	$specialities = \App\Speciality::all();
+    	view()->share('specialities',$specialities);
+    	return view('chuyenkhoa');
+    }
+    public function chuyenkhoadetail($id){
+    	$url = explode('-',$id);
+    	 
+    	$qid = $url[count($url)-1];
+    	$speciality = \App\Speciality::find($qid);
+    	//var_dump($speciality);
+    	$questions = Question::where('speciality_id',$qid)->orderby('created_at','DESC')->get();
+    	//var_dump($questions[0]->question_id);
+        view()->share('speciality',$speciality);
+    	view()->share('questions',$questions);
+    	return view('chuyenkhoadetail');
+    }
+    
+    public function bacsi_detail($id){
+    	$url = explode('-',$id);
+    	
+    	$qid = $url[count($url)-1];
+    	$doctor = Doctor::find($qid);
+    	view()->share('doctor',$doctor);
+    	//var_dump($doctor->activity[0]->question);
+    	return view('bacsi-detail');
+    }
+    public function dangky(){
+    	return view('dangky');
+    }
+    public function postDangky(Request $rq){
+    	$email =$rq->input('email');
+    	$phone = $rq->input('mobile_phone');
+    	$name = $rq->input('name');
+    	$next =$rq->input('next');
+    	$password = $rq->input('password');
+    	$place_add = $rq->input('place_add');
+    	$place_name = $rq->input('place_name');
+    	$prof_place = $rq->input('prof_place');
+    	$prof_spec = $rq->input('prof_spec');
+    	$type = $rq->input('type');
+        // 
+
+        //
+    	if($email!=null && $name!=null){
+    		$user = Users::where('email',$email)->first();
+    		if($user==null){
+    			$user = new Users;  		
+	    		$user->email = $email;
+	    		$user->fullname= $name;
+	    		$user->phone = $phone;
+	    		$user->password= Hash::make($password);
+	    		$user_type = UserType::where('user_type_title',$type)->first();
+	    		$user->user_type_id= $user_type!=null?$user_type->user_type_id:'1';
+	    		$user->save();
+    		}
+    		else{
+    			echo json_encode(array('next'=>$next));
+    		}
+    		
+    	}
+    	echo json_encode(array('next'=>$next));
+    }
+    public function dangnhap(Request $rq){
+    	if($rq->input('next')!=null){
+    		$rq->session()->put('next',$rq->input('next'));
+    	}
+    	if($rq->session()->has('user')){
+    		if($rq->input('next')!=null)
+    			return redirect($rq->input('next'));
+    		return redirect('/tai-khoan');
+    	}else{
+    		return view('dangnhap');
+    	}
+    }
+    public function postDangnhap(Request $rq){
+    	//echo 'test';return;
+    	$email = $rq->input('email');
+    	$pass= $rq->input('password');
+    	$next = $rq->input('next');
+    	if(!$rq->session()->has('user')){
+	    	$user = Users::where('email',$email)->first();
+	    	if($user!=null){
+	    		if(Hash::check($pass,$user->password)){
+	    			$rq->session()->put('user',$user);
+	    			return response()->json(array('next'=>$next,'name'=>$user->fullname,'email'=>$user->email));
+	    			//return redirect('/tai-khoan');
+	    		} 
+	    	}
+	    	return response()->json(array('detail'=>'Wrong email or password'),400);
+    	}
+    }
+    public function taikhoan(Request $rq){
+    	if($rq->session()->has('user')){
+    		return view('taikhoan_home');
+    	}
+    	else{
+    		return redirect('/dang-nhap?next=/tai-khoan');
+    	}
+    }
+    public function taikhoan_method(Request $rq, $method){
+    	if($rq->session()->has('user')){
+	    	switch($method){
+	    		case "ghi-nho":
+	    			 return $this->taikhoan_ghinho($rq);
+	    			break;
+	    		case "nhan-xet":
+	    			return $this->taikhoan_nhanxet($rq);
+	    			break;
+	    		case "hoi-dap":
+
+	    			return $this->taikhoan_hoidap($rq);
+	    			break;
+	    		case "doi-mat-khau":
+	    			return $this->taikhoan_doimatkhau($rq);
+	    			break;
+	    		case "cau-hoi-moi-nhat":
+	    			$all = \App\Answer::pluck('question_id')->all();
+	    			if($rq->session()->get('user')->user_type_id ==2){
+	    				 $doctorid = $rq->session()->get('user')->doctor->doctor_id;
+	    				 $spec = \App\DoctorSpeciality::where('doctor_id',$doctorid)->pluck('speciality_id')->all();
+	    				// var_dump($spec);
+	    				 $questions = \App\Question::whereNotIn('question_id',$all)->whereIn('speciality_id',$spec)->select('*')->get();
+	    				//var_dump($questions);
+	    				 view()->share('questions',$questions);
+	    				 return view('taikhoan_cauhoimoinhat');
+	    			    }
+                   
+	    			break;
+	    	}
+    	}
+    	else{
+    		return redirect('/dang-nhap?next=/tai-khoan');
+    	}
+    }
+    public static function taikhoan_ghinho(Request $rq){
+    	return view('taikhoan_ghinho');
+    }
+    public static function taikhoan_nhanxet(Request $rq){
+    	return 'somming soon';
+    }
+    public static function taikhoan_hoidap(Request $rq){
+    
+        $user_id = $rq->session()->get('user')->user_id;
+         $count_answers = 0;
+        $questions = Question::where('user_id',$user_id)->get();
+        foreach ($questions as $question) {
+             $dem  = Answer::where('question_id',$question['question_id'])->count();
+             $count_answers=  $dem +1;
+              
+            } $count_answers =$count_answers +$count_answers;;
+       $count_questions =Question::where('user_id',$user_id)->count();
+    	return view('taikhoan_hoidap',['questions' => $questions,'count_answers' => $count_answers,'count_questions' => $count_questions]);
+
+    }
+    public static function taikhoan_doimatkhau(Request $rq){
+    	return view('taikhoan_doimatkhau');
+    }
+    public function doimatkhau(Request $rq){
+    	$pass = $rq->input('password');
+    	$newpass = $rq->input('new_password');
+    	$newpass_confirm = $rq->input('new_password_confirm');
+    	$email = $rq->session()->get('user')->email;
+    	$user = Users::where('email',$email)->first();
+    	if($user!=null){
+    		if(Hash::check($pass,$user->password)){
+    			if($newpass==$newpass_confirm){
+    				$user->password= Hash::make($newpass);
+    				$user->save();
+    			}
+    			else{
+    				return response()->json(array('detail'=>'New password invalid'),400);
+    			}
+    		}
+    		else{
+    			return response()->json(array('detail'=>'Password invalid'),400);
+    		}
+    	}
+    }
+    
+    public function dangxuat(Request $rq){
+    	$rq->session()->forget('user');
+    	
+    }
+    public function khuyenmai(Request $rq){
+    	
+    }
+    public function benh(Request $rq){
+    	  $benh_view = Disease::groupBy('view')->orderBy('view','DESC')->get();
+          return view('benh',['benh_view'=> $benh_view]);
+    }
+    public function chitietbenh($qid)
+    {
+    	$url = explode('-',$qid);
+    	$id = $url[count($url)-1];
+    	//$bacsi =
+        
+    	$benh = Disease::find($id);
+    	$cauhoi = Question::where('question_title',$benh['speciality_id'])->get();
+        $id_bacsi = DoctorSpeciality::where('speciality_id',$benh['speciality_id'])->get();
+
+    	return view('benh-detail',['benh'=>$benh,'cauhoi'=>$cauhoi,'id_bacsi'=>$id_bacsi]);
+    }
+    
+    
+    public function thuoc(Request $rq){
+    	$medicines = Medicine::orderBy('medicine_id','DESC')->paginate(60);
+    	
+    	return view('thuoc',['medicines'=>$medicines])->withPost($medicines);
+    }
+    public function chitietthuoc($qid){
+    	$url = explode('-',$qid);
+    	$id = $url[count($url)-1];
+    	//echo $id;return;
+    	$thuoc = Medicine::find($id);
+    	//var_dump($thuoc);return;
+    	//var_dump($thuoc->type_medicine);
+        if($thuoc->type_medicine!=null){
+    		$lienquan =Medicine::where('type_medicine','like','%'.$thuoc->type_medicine.'%')->get();
+    		view()->share('lienquan',$lienquan);
+        }
+    	//$lienquan = Medicine::all()->get(5);
+    	//var_dump($lienquan);return;
+    	return view('thuoc-detail',['thuoc'=>$thuoc]);
+    }
+    public function comment($qid,Request $rq){
+    	function to_slug($str) {
+    		$str = trim(mb_strtolower($str));
+    		$str = preg_replace('/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/', 'a', $str);
+    		$str = preg_replace('/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/', 'e', $str);
+    		$str = preg_replace('/(ì|í|ị|ỉ|ĩ)/', 'i', $str);
+    		$str = preg_replace('/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/', 'o', $str);
+    		$str = preg_replace('/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/', 'u', $str);
+    		$str = preg_replace('/(ỳ|ý|ỵ|ỷ|ỹ)/', 'y', $str);
+    		$str = preg_replace('/(đ)/', 'd', $str);
+    		$str = preg_replace('/[^a-z0-9-\s]/', '', $str);
+    		$str = preg_replace('/([\s]+)/', '-', $str);
+    		return $str;
+    	}    $url = explode('-',$qid);
+    	$id = $url[count($url)-1];
+    	$baiviet =Article::find($id);
+    	$comment = new comment;
+    	$comment->article_id = $id;
+    	$comment->user_id=$rq->session()->get('user')->user_id;
+    	$comment->content= $rq->input('body');
+    	$comment->save();
+    	$tieude = to_slug($baiviet['article_title']);
+    	return redirect('bai-viet/'.$tieude.'-'.$id)->with('thongbao','Viết Bình Luận Thành Công');
+    }
+    public function commentcsyt($qid,Request $rq){
+    	var_dump($qid); return;
+    	if($rq->input('next')!=""){
+    		$rq->session()->put('next',$rq->input('next'));
+    	}
+    	if(!$rq->session()->has('user'))
+    	{
+    		return redirect('/dang-nhap?next='.$rq->session->get('next'));
+    	}
+    	else{
+    		$url = explode('-',$qid);
+    		$id = $url[count($url)-1];
+    		$cs =Clinic::find($id);
+    		$comment = new comment;
+    		$comment->clinic_id = $id;
+    		$comment->user_id=$rq->session()->get('user')->user_id;
+    		$comment->feedback_=$rq->input('rating');
+    		$comment->content= $rq->input('body');
+    		// $comment->name= $rq->input('name');
+    		//$comment->email= $rq->input('email');
+    		$comment->save();
+    		//$tieude = to_slug($baiviet['article_title']);
+    		return redirect('/co-so-y-te/'.'-'.$id.'/kham-benh#nhan-xet')->with('thongbao','Bạn Bình Luận Thành Công');
+    	}
+    }
+    public function detail($id){
+
+           $comment  = comment::where('article_id',$id)->orderBy('created_at','DESC')->get();
+
+
+          $Catalog = Catalog::all();
+          $baiviet_new=Article::orderBy('article_id','DESC')->limit(1)->first();
+          $baiviets    =Article::orderBy('article_id','DESC')->limit(5)->get();
+          $baiviet = Article::find($id);
+            $lienquan =Article::where('catalog_id',$baiviet['catalog_id'])->orderBy('article_id','DESC')->limit(5)->get();
+          $noibat   =Article::orderBy('created_at','DESC')->limit(5)->get();// ,'noibat' =>$noibat
+
+          return view('detail',['baiviet' => $baiviet,'lienquan' => $lienquan,'noibat' => $noibat,'comment' => $comment]);
+    }
+
+ 
+    public function chitietbaiviet($qid){
+         $url = explode('-',$qid);   
+         $id = $url[count($url)-1];
+         $Catalogs = Catalog::all();
+          $comment  = comment::where('article_id',$id)->orderBy('created_at','DESC')->get();
+          $Catalog = Catalog::all();
+          $baiviet_new=Article::orderBy('article_id','DESC')->limit(1)->first();
+          $baiviets    =Article::orderBy('article_id','DESC')->limit(5)->get();
+          $baiviet = Article::find($id);
+          $lienquan =Article::where('catalog_id',$baiviet['catalog_id'])->orderBy('article_id','DESC')->limit(5)->get();
+          $noibat   =Article::orderBy('created_at','DESC')->limit(5)->get();// ,'noibat' =>$noibat
+          return view('detail',['Catalogs'=>$Catalogs,'baiviet' => $baiviet,'lienquan' => $lienquan,'noibat' => $noibat,'comment' => $comment]);
+
+    }
+    public function chuyenmuc($qid) {
+        $url = explode('-',$qid);   
+        $id = $url[count($url)-1];
+        $Catalogs = Catalog::all();
+        $Catalog = Catalog::where('id',$id)->first();
+        if($Catalog->parent_id == 0)
+        {
+          $baiviet_new=Article::where('catalog_id',$id)->orderBy('article_id','ASC')->limit(1)->first();
+          $baiviet = Article::where('catalog_id',$id)->orderBy('article_id','ASC')->paginate(10);
+          return view('danhmuc',['Catalogs' => $Catalogs,'baiviet' => $baiviet,'baiviet_new'=>$baiviet_new]);
+         }
+        else
+
+        $baiviet_new=Article::where('catalog_id',$id)->orderBy('article_id','DESC')->limit(1)->first();
+        $baiviet = Article::where('catalog_id',$id)->orderBy('article_id','ASC')->paginate(10);
+        return view('danhmuc',['Catalogs' => $Catalogs,'baiviet' => $baiviet,'baiviet_new'=>$baiviet_new])->withPost($baiviet);
+        
+    }
+       public function get() {
+        $Catalog = Catalog::all();
+        $baiviet_new=Article::orderBy('article_id','ASC')->limit(1)->first();
+        $baiviets  =Article::orderBy('article_id','ASC')->limit(5)->get();
+        return view('baiviet-list',['baiviets' => $baiviets,'Catalog' => $Catalog,'baiviet_new'=>$baiviet_new])->withPost($baiviets);
+
+    }
+    public function danhmuc($id)
+    {   
+           $Catalog = Catalog::find($id);
+       
+           $baiviet_new = Article::where('catalog_id',$id)->orderBy('article_id','ASC')->first();
+           if(!$baiviet_new)
+           {
+            $baiviet_new = null;
+           }
+           $baiviet =Article::where('catalog_id',$id)->orderBy('article_id','ASC')->limit(8)->get();
+          
+
+        return view('danhmuc',['baiviet' => $baiviet,'Catalog'=>$Catalog,'baiviet_new' => $baiviet_new])->withPost($baiviet);;
+    }
+}

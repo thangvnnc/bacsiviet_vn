@@ -1,0 +1,49 @@
+@extends('taikhoan',['title'=> 'Medicalvn - Trang chủ'])
+
+ 	@section('taikhoan_content')
+ 		
+		<div class="content">
+			
+<div id="my-threads">
+
+	<div id="my-threads-tab">
+		<ul>
+			<li>
+				<a href="/tai-khoan/hoi-dap/?tab=answered" class="active">Đã được trả lời (0)</a>
+			</li>
+
+			
+
+			<li>
+				<a href="/tai-khoan/hoi-dap/?tab=unanswered">Chưa được trả lời (0)</a>
+			</li>
+
+			<li class="last">
+				<a href="/hoi-bac-si/dat-cau-hoi/">
+					<i class="fa fa-commenting"></i>
+					Đặt câu hỏi
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	
+		<div id="answered">
+			
+				<h3>Không có bài viết nào</h3>
+			
+
+			
+		</div>
+	
+	
+
+
+
+</div>
+
+		</div>
+
+
+
+	@endsection

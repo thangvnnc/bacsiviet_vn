@@ -1,0 +1,746 @@
+@extends('main',['title'=> 'Danh sách bài viết'])
+
+
+@section('content')
+  <div id="main">
+			
+    
+
+			
+			
+    <div class="position" id="list-cms">
+        <div class="content">
+            <ul class="cms-breadcrumb homepage-breadcrumb">
+                <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <a href="/" itemprop="url"><span itemprop="title">Trang chủ</span></a> \
+                </li>
+                <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <a href="#" itemprop="url"><span itemprop="title">Bài viết</span></a>
+                </li>
+            </ul>
+
+            <div class="top-new">
+                
+                    <div class="latest-post">
+                        
+                            <div class="latest-post-image">
+                                <a href="/bai-viet/tri-nam-het-bao-nhieu-tien/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20170103_175428_962111_tri-nam-da-tai-nha.max-1800x1800.jpg);"></a>
+                            </div>
+                        
+
+                        <div class="latest-post-body">
+                            <h2 class="title-latest-post">
+                                <a href="/bai-viet/tri-nam-het-bao-nhieu-tien/" title="Trị nám hết bao nhiêu tiền?">Trị nám hết bao nhiêu tiền?</a>
+                            </h2>
+                            <div class="description-latest-post">
+                                Bất kỳ ai cũng mong muốn mình có một làn da mịn màng, không tì vết. Tuy nhiên, thời gian, tuổi tác cùng sự thay đổi nội tiết tố làm xuất hiện những vết nám, tàn nhạng khiến không ít chị em tự ti.  Sau đây, ViCare sẽ cung cấp cho bạn thông tin về các phương pháp trị nám cũng như giá cả và địa chỉ các cơ sở trị nám uy tín.
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="list-feature">
+                    <ul>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/nguoi-dan-ong-47-tuoi-mat-mang-vi-ngo-doc-ruou/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20170103_101510_585140_kynangsinhton.vn-ngo-.max-200x200.jpg)" title="Người đàn ông 47 tuổi mất mạng vì ngộ độc rượu"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/nguoi-dan-ong-47-tuoi-mat-mang-vi-ngo-doc-ruou/" title="Người đàn ông 47 tuổi mất mạng vì ngộ độc rượu">
+                                        Người đàn ông 47 tuổi mất mạng vì ngộ độc rượu
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/xu-tri-nhu-the-nao-khi-bi-ngo-doc-ruou/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20170103_100519_026025_ngo-doc.max-200x200.jpg)" title="Xử trí như thế nào khi bị ngộ độc rượu?"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/xu-tri-nhu-the-nao-khi-bi-ngo-doc-ruou/" title="Xử trí như thế nào khi bị ngộ độc rượu?">
+                                        Xử trí như thế nào khi bị ngộ độc rượu?
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/thuoc-men-vi-sinh-song-biolac-bi-thu-hoi-tren-toan-quoc-do-khong-dat-chat-luong/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20170103_101739_151721_18.max-200x200.jpg)" title="Thuốc Men vi sinh sống Biolac bị thu hồi trên toàn quốc do không đạt chất lượng"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/thuoc-men-vi-sinh-song-biolac-bi-thu-hoi-tren-toan-quoc-do-khong-dat-chat-luong/" title="Thuốc Men vi sinh sống Biolac bị thu hồi trên toàn quốc do không đạt chất lượng">
+                                        Thuốc Men vi sinh sống Biolac bị thu hồi trên toàn quốc do không đạt chất lượng
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/mo-hinh-sieu-thi-mini-trong-benh-vien-tai-tp-hcm/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20170103_103022_044971_supermarket-consumers.max-200x200.jpg)" title="Mô hình siêu thị mini trong bệnh viện tại TP. HCM"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/mo-hinh-sieu-thi-mini-trong-benh-vien-tai-tp-hcm/" title="Mô hình siêu thị mini trong bệnh viện tại TP. HCM">
+                                        Mô hình siêu thị mini trong bệnh viện tại TP. HCM
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/gioi-thieu-phuong-phap-tap-xa-don-chua-thoat-vi-dia-dem/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20161230_103115_518403_lam-rong-co-lung-3.max-200x200.jpg)" title="Giới thiệu phương pháp tập xà đơn chữa thoát vị đĩa đệm"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/gioi-thieu-phuong-phap-tap-xa-don-chua-thoat-vi-dia-dem/" title="Giới thiệu phương pháp tập xà đơn chữa thoát vị đĩa đệm">
+                                        Giới thiệu phương pháp tập xà đơn chữa thoát vị đĩa đệm
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/tai-sao-chung-ta-can-quan-he-tinh-duc/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20161230_150220_545391_o-COUPLE-TRAVEL-faceb.max-200x200.jpg)" title="Tại sao chúng ta cần quan hệ tình dục?"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/tai-sao-chung-ta-can-quan-he-tinh-duc/" title="Tại sao chúng ta cần quan hệ tình dục?">
+                                        Tại sao chúng ta cần quan hệ tình dục?
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                            <li>
+                                
+                                    <a href="/bai-viet/benh-thoat-vi-dia-dem-co-nguy-hiem-khong/" class="image" style="background-image: url(https://dwbxi9io9o7ce.cloudfront.net/images/20170103_042436_161769_Young-Man-with-Back-P.max-200x200.jpg)" title="Bệnh thoát vị đĩa đệm có nguy hiểm không?"></a>
+                                
+                                <h4>
+                                    <a href="/bai-viet/benh-thoat-vi-dia-dem-co-nguy-hiem-khong/" title="Bệnh thoát vị đĩa đệm có nguy hiểm không?">
+                                        Bệnh thoát vị đĩa đệm có nguy hiểm không?
+                                    </a>
+                                </h4>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <div class="post-list-new">
+                <ul>
+                    
+                        <li>
+                            <a href="/bai-viet/lieu-tap-luyen-trong-moi-truong-nong-co-tot-cho-suc-khoe-hon/" class="image">
+                                
+                                    <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161230_144626_869747_sweating.2e16d0ba.fill-520x340.jpg" alt="tập luyện trong môi trường nóng" title="Liệu tập luyện trong môi trường nóng có tốt cho sức khỏe hơn?">
+                                
+                            </a>
+                            <h4><a href="/bai-viet/lieu-tap-luyen-trong-moi-truong-nong-co-tot-cho-suc-khoe-hon/">Liệu tập luyện trong môi trường nóng có tốt cho sức khỏe hơn?</a></h4>
+                        </li>
+                    
+                        <li>
+                            <a href="/bai-viet/nguoi-bi-benh-viem-loet-da-day-nen-an-gi/" class="image">
+                                
+                                    <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20170103_033701_985031_shutterstoc.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-nguoi-bi-benh-viem-loet-da-day-nen-an-gi" title="Người bị bệnh viêm loét dạ dày nên ăn gì?">
+                                
+                            </a>
+                            <h4><a href="/bai-viet/nguoi-bi-benh-viem-loet-da-day-nen-an-gi/">Người bị bệnh viêm loét dạ dày nên ăn gì?</a></h4>
+                        </li>
+                    
+                        <li>
+                            <a href="/bai-viet/ai-la-nguoi-nghien-tinh-duc-hay-cung-kiem-tra/" class="image">
+                                
+                                    <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161230_154526_880088_wallhaven-3.2e16d0ba.fill-520x340.jpg" alt="người nghiện tình dục" title="Ai là người nghiện tình dục? Hãy cùng kiểm tra﻿">
+                                
+                            </a>
+                            <h4><a href="/bai-viet/ai-la-nguoi-nghien-tinh-duc-hay-cung-kiem-tra/">Ai là người nghiện tình dục? Hãy cùng kiểm tra﻿</a></h4>
+                        </li>
+                    
+                        <li>
+                            <a href="/bai-viet/nen-uong-gi-vao-ngay-le-ta-on-dich/" class="image">
+                                
+                                    <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161230_142219_617943_Breakfast_2.2e16d0ba.fill-520x340.jpg" alt="Lễ Tạ Ơn" title="Nên ăn uống gì vào ngày Lễ Tạ Ơn">
+                                
+                            </a>
+                            <h4><a href="/bai-viet/nen-uong-gi-vao-ngay-le-ta-on-dich/">Nên ăn uống gì vào ngày Lễ Tạ Ơn</a></h4>
+                        </li>
+                    
+                </ul>
+            </div>
+
+            
+                
+                    <div class="list-by-category">
+                        <div class="list-category">
+                            <ul>
+                                <li>
+                                    <a class="active" href="/bai-viet/chuyen-muc/phong-chua-benh/">Phòng &amp; Chữa Bệnh</a>
+                                </li>
+
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/kham-benh-o-dau-tot/">Khám Bệnh Ở Đâu Tốt?</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/kien-thuc-y-hoc/">Kiến Thức Y Học</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/tu-thuoc-gia-dinh/">Tủ Thuốc Gia Đình</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/y-hoc-co-truyen/">Y Học Cổ Truyền</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/xet-nghiem/">Xét nghiệm</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/ung-thu/">Ung thư</a>
+                                    </li>
+                                
+
+                            </ul>
+                        </div>
+
+                        <div class="list-post">
+                            <ul>
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/top-4-benh-vien-nam-khoa-o-binh-duong-tot-nhat/" class="title">Top 4 bệnh viện Nam khoa ở Bình Dương tốt nhất</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/top-4-benh-vien-nam-khoa-o-binh-duong-tot-nhat/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161231_125806_692903_253.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-tim-hieu-ve-benh-vien-nam-khoa-o-binh-duong" title="Top 4 bệnh viện Nam khoa ở Bình Dương tốt nhất">
+                                                  
+                                                </a>
+                                                <div class="description">Các vấn đề về nam khoa không phải hiếm gặp trong cuộc sống tuy nhiên vì một số lý do, đặc biệt là tâm lý xấu hổ mà nhiều người thường e ngại đi khám khiến cho bệnh càng ngày...</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/tim-hieu-benh-vien-quan-tan-phu-o-dau/" class="title">Tìm hiểu bệnh viện quận Tân Phú ở đâu?</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/tim-hieu-benh-vien-quan-tan-phu-o-dau/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20170102_094505_832647_77.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-tim-hieu-benh-vien-quan-tan-phu-o-dau-body-1" title="Tìm hiểu bệnh viện quận Tân Phú ở đâu?">
+                                                  
+                                                </a>
+                                                <div class="description">Quận Tân Phú là một quận nội thành của TP.HCM. Với diện tích 1.606,98 ha và 310.876 nhân khẩu đây là một địa bàn khá rộng và tập trung đông dân cư của thành phố.</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                            </ul>
+                            
+                                <div class="post-by-category">
+                                    <ul>
+                                        
+                                            
+                                        
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/benh-vien-lao-phoi-trung-uong-nam-o-dau/">Bệnh viện Lao Phổi Trung ương nằm ở đâu?</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/viem-ruot-thua-o-phu-nu-co-thai-nguy-hiem-nhu-nao/">Viêm ruột thừa ở phụ nữ có thai nguy hiểm như thế nào?</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/sau-rang-bi-noi-hach-phai-lam-sao/">Sâu răng bị nổi hạch phải làm sao?</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/doi-net-ve-phong-kham-benh-nam-khoa-thai-ha/">Đôi nét về phòng khám bệnh Nam khoa Thái Hà</a></h4>
+                                                </li>
+                                            
+                                        
+                                    </ul>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+            
+                
+                    <div class="list-by-category">
+                        <div class="list-category">
+                            <ul>
+                                <li>
+                                    <a class="active" href="/bai-viet/chuyen-muc/gioi-tinh/">Giới Tính</a>
+                                </li>
+
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/suc-khoe-tinh-duc/">Sức Khỏe Tình Dục</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/nam/">Nam</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/nu/">Nữ</a>
+                                    </li>
+                                
+
+                            </ul>
+                        </div>
+
+                        <div class="list-post">
+                            <ul>
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/11-ly-do-khien-cac-co-gai-say-me-dan-ong-70-tuoi/" class="title">11 lý do khiến các cô gái say mê đàn ông 70 tuổi</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/11-ly-do-khien-cac-co-gai-say-me-dan-ong-70-tuoi/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161229_094447_789364_15591778_14.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-11-ly-do-khien-cac-co-gai-say-me-dan-ong-70-tuoi-hoang-kieu" title="11 lý do khiến các cô gái say mê đàn ông 70 tuổi">
+                                                  
+                                                </a>
+                                                <div class="description">Báo chi những ngày gần đây đang nóng lên vì tin đồn Ngọc Trinh yêu tỷ phú Hoàng Kiều già hơn cô 45 tuổi. Vậy lý do gì đã tạo nên sức hút của những người đàn ông này với các...</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/quy-tac-do-lot-nhat-dinh-cha-me-phai-day-con/" class="title">"Quy tắc đồ lót" nhất định cha mẹ phải dạy con</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/quy-tac-do-lot-nhat-dinh-cha-me-phai-day-con/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161226_110601_587463_20160612102.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-quy-tac-do-lot-nhat-dinh-cha-me-phai-day-con" title="&quot;Quy tắc đồ lót&quot; nhất định cha mẹ phải dạy con">
+                                                  
+                                                </a>
+                                                <div class="description">Theo thống kê, cứ 4 bé gái thì có 1 bé bị xâm hại tình dục. Ở Việt Nam, trong 5 năm (2011-2015) cả nước có 5.300 vụ xâm hại tình dục trẻ em.</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                            </ul>
+                            
+                                <div class="post-by-category">
+                                    <ul>
+                                        
+                                            
+                                        
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/bat-mach-nhung-dau-hieu-chang-da-cam-nang-ban/">Bắt mạch những dấu hiệu chàng đã cảm nắng bạn?</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/bi-quyet-va-dau-hieu-nhan-biet-mang-thai-2-tuan-dau-tien/">Bí quyết và dấu hiệu nhận biết mang thai 2 tuần đầu tiên</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/tim-hieu-hien-tuong-rong-kinh-sau-khi-pha-thai-bang-thuoc/">Tìm hiểu hiện tượng rong kinh sau khi phá thai bằng thuốc</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/nguyen-nhan-bieu-hien-va-bi-kip-chua-benh-xuat-tinh-muon/">Nguyên nhân, biểu hiện và bí kíp chữa bệnh xuất tinh muộn</a></h4>
+                                                </li>
+                                            
+                                        
+                                    </ul>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+            
+                
+                    <div class="list-by-category">
+                        <div class="list-category">
+                            <ul>
+                                <li>
+                                    <a class="active" href="/bai-viet/chuyen-muc/dinh-duong/">Dinh Dưỡng</a>
+                                </li>
+
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/thiet-yeu/">Thiết Yếu</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/ban-can-biet/">Bạn Cần Biết</a>
+                                    </li>
+                                
+
+                            </ul>
+                        </div>
+
+                        <div class="list-post">
+                            <ul>
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/loi-khuyen-cho-viec-an-uong-lanh-manh-dich/" class="title">Lời khuyên cho việc ăn uống lành mạnh</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/loi-khuyen-cho-viec-an-uong-lanh-manh-dich/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161230_132053_038361_Foods-and-H.2e16d0ba.fill-520x340.jpg" alt="ăn uống lành mạnh" title="Lời khuyên cho việc ăn uống lành mạnh">
+                                                  
+                                                </a>
+                                                <div class="description">Bạn có đang lo lắng làm sao để biết chính xác một chế độ ăn uống lành mạnh phù hợp với mỗi người trong gia đình không?</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/thuc-pham-giau-chat-chong-oxy-hoa-giup-co-khoe-manh/" class="title">Thực phẩm giàu chất chống oxy hóa giúp cơ thể khỏe mạnh</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/thuc-pham-giau-chat-chong-oxy-hoa-giup-co-khoe-manh/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161230_090609_985612_antioxidant.2e16d0ba.fill-520x340.jpg" alt="chất chống oxy hóa" title="Thực phẩm giàu chất chống oxy hóa giúp cơ thể khỏe mạnh">
+                                                  
+                                                </a>
+                                                <div class="description">Bạn có biết những loại thực phẩm giàu chất chống oxy hóa có vai trò gì cho cơ thể không? Tại sao lại quan trọng đến vậy?</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                            </ul>
+                            
+                                <div class="post-by-category">
+                                    <ul>
+                                        
+                                            
+                                        
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/7-than-duoc-sieu-re-bo-gan-ban-nen-cho-gia-dinh-hang-ngay/">7 'thần dược' siêu rẻ bổ gan bạn nên cho gia đình ăn hàng ngày</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/7-loai-thuc-pham-co-the-giup-ban-tang-co-hieu-qua/">7 thực phẩm có thể giúp bạn tăng cơ hiệu quả</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/9-loai-thuc-pham-tuyet-voi-cho-nguoi-mac-benh-tieu-duong/">9 loại thực phẩm tuyệt vời cho người mắc bệnh tiểu đường</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/7-loai-thuc-pham-co-xuat-xu-ben-tau-nen-tranh-cang-xa-cang-tot/">7 loại thực phẩm có xuất xứ bên Tàu nên tránh càng xa càng tốt</a></h4>
+                                                </li>
+                                            
+                                        
+                                    </ul>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+            
+                
+                    <div class="list-by-category">
+                        <div class="list-category">
+                            <ul>
+                                <li>
+                                    <a class="active" href="/bai-viet/chuyen-muc/me-be/">Mẹ &amp; Bé</a>
+                                </li>
+
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/suc-khoe-thai-ky/">Sức Khỏe Thai Kỳ</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/cham-soc-be/">Chăm Sóc Bé</a>
+                                    </li>
+                                
+
+                            </ul>
+                        </div>
+
+                        <div class="list-post">
+                            <ul>
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/ba-bau-an-gi-va-uong-gi-de-nhieu-nuoc-oi/" class="title">Bà bầu ăn gì và uống gì để nhiều nước ối?</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/ba-bau-an-gi-va-uong-gi-de-nhieu-nuoc-oi/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20170103_042836_256083_220.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-ba-bau-an-gi-va-uong-gi-de-nhieu-nuoc-oi" title="Bà bầu ăn gì và uống gì để nhiều nước ối?">
+                                                  
+                                                </a>
+                                                <div class="description">Nước ối có vai trò vô cùng quan trọng trong sự phát triển của thai nhi. Khi lượng nước ối dưới 600ml thì có nghĩa là đang xảy ra tình trạng thiếu nước ối.</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/bat-mi-loi-ich-tap-boi-cho-tre-so-sinh/" class="title">Bật mí lợi ích tập bơi cho trẻ sơ sinh</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/bat-mi-loi-ich-tap-boi-cho-tre-so-sinh/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20161227_040737_540756_day-be-tap-.2e16d0ba.fill-520x340.jpg" alt="be tap boi" title="Bật mí lợi ích tập bơi cho trẻ sơ sinh">
+                                                  
+                                                </a>
+                                                <div class="description">Ở nhiều quốc gia trên thế giới việc tập bơi cho trẻ sơ sinh trở nên quen thuộc, nhưng ở Việt Nam thì sao. Chắc hẳn nhiều cha mẹ không nghĩ đến điều này và biết rõ lợi ích...</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                            </ul>
+                            
+                                <div class="post-by-category">
+                                    <ul>
+                                        
+                                            
+                                        
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/12-cach-de-xoa-diu-chung-o-nong-trong-qua-trinh-mang-thai/">12 cách để xoa dịu chứng ợ nóng trong quá trình mang thai</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/nhung-sai-lam-cua-bo-me-khi-cho-tre-nho-uong-thuoc/">Những sai lầm của bố mẹ khi cho trẻ nhỏ uống thuốc</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/phat-trien-giac-quan-cua-be-vi-giac/">Phát triển giác quan của bé: vị giác</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/me-bau-biet-gi-khi-kham-thai-tuan-22/">Mẹ bầu biết gì khi khám thai tuần 22?</a></h4>
+                                                </li>
+                                            
+                                        
+                                    </ul>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+            
+                
+                    <div class="list-by-category">
+                        <div class="list-category">
+                            <ul>
+                                <li>
+                                    <a class="active" href="/bai-viet/chuyen-muc/khoe-dep/">Khỏe Đẹp</a>
+                                </li>
+
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/cham-soc-toc/">Chăm Sóc Tóc</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/duong-da/">Dưỡng Da</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/suc-khoe-tinh-than/">Sức Khỏe Tinh Thần</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/rang-mieng/">Răng Miệng</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="/bai-viet/chuyen-muc/voc-dang/">Vóc Dáng</a>
+                                    </li>
+                                
+
+                            </ul>
+                        </div>
+
+                        <div class="list-post">
+                            <ul>
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/tri-nam-da-don-gian-ma-hieu-qua-tai-nha/" class="title">Trị nám da đơn giản mà hiệu quả tại nhà</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/tri-nam-da-don-gian-ma-hieu-qua-tai-nha/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/20170102_120757_329431_tat-tan-tat.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-tri-nam-da-don-gian-ma-hieu-qua-tai-nha" title="Trị nám da đơn giản mà hiệu quả tại nhà">
+                                                  
+                                                </a>
+                                                <div class="description">Nám da thường gây nên những mặc cảm về ngoại hình, khiến chị em thiếu tự tin trong giao tiếp vì thế làm sao để thổi bay những vết nám trên da là câu hỏi được rất nhiều người...</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <h4>
+                                                <a href="/bai-viet/hay-chu-y-den-ve-dep-cua-ham-rang/" class="title">Hãy chú ý đến vẻ đẹp của hàm răng</a>
+                                            </h4>
+
+                                            <div class="body-post">
+                                                <a href="/bai-viet/hay-chu-y-den-ve-dep-cua-ham-rang/" class="image">
+                                                  
+                                                      <img src="https://dwbxi9io9o7ce.cloudfront.net/images/team2-e1467258310131.2e16d0ba.fill-520x340.jpg" alt="vicare.vn-hay-mim-cuoi-de-rang-ban-duoc-tho" title="Hãy chú ý đến vẻ đẹp của hàm răng">
+                                                  
+                                                </a>
+                                                <div class="description">Nụ cười là cách dễ nhận thấy nhất để thể hiện sự cuốn hút và khỏe mạnh. Vì vậy cần phải chú ý đến vẻ đẹp của hàm răng, nhất là trong xã hội hiện đại</div>
+                                            </div>
+                                        </li>
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                                    
+                                
+                            </ul>
+                            
+                                <div class="post-by-category">
+                                    <ul>
+                                        
+                                            
+                                        
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/hay-bat-dau-loi-khuyen-don-gian-nhung-huu-ich-cho-viec-tap-the-duc/">Hãy bắt đầu - lời khuyên đơn giản nhưng hữu ích cho việc tập thể dục</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/cac-co-that-lung-gian-dieu-gi-la-khong-tot-dich/">Các cơ thắt lưng giãn: Điều gì là không tốt?</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/tai-sao-an-carbs-giup-ban-giam-can/">Tại sao ăn carbs giúp bạn giảm cân?</a></h4>
+                                                </li>
+                                            
+                                        
+                                            
+                                                <li>
+                                                    <h4><a href="/bai-viet/can-di-bo-bao-nhieu-moi-ngay-de-giam-can/">Cần đi bộ bao nhiêu mỗi ngày để giảm cân?</a></h4>
+                                                </li>
+                                            
+                                        
+                                    </ul>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+            
+                
+            
+        </div>
+    </div>
+<div class="global-thread-create-cta">
+	<a href="/hoi-bac-si/dat-cau-hoi/" class="button">
+		<i class="fa fa-question-circle" aria-hidden="true"></i>
+		<strong>Hỏi bác sĩ</strong>
+		<span>miễn phí</span>
+	</a>
+</div>
+
+			
+			<input name="csrfmiddlewaretoken" value="OSU4rxNLLX1ROIMoIKau1fgs2qUAr7Vj" type="hidden">
+		</div>
+@endsection

@@ -1,0 +1,149 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Question;
+use App\Answer;
+use App\Clinic;
+use App\Comment;
+
+class ApiController extends Controller
+{
+	public $request;
+    public function v1(Request $rq ,$method){
+    	$this->request = $rq;
+    	switch ($method){
+    		case "thread":
+    			return $this->datcauhoi($rq);
+    			break;
+    		case "post":
+    			return $this->newPost($rq);
+    			break;
+    				
+    	}
+    }
+    public function search(Request $rq){
+    	$result = '[{"top_score":17.62435,"items":[{"absolute_url":"/hoi-bac-si/test-cau-hoi-137761/","body_search":"<em>ABC</em>","name":"Test cau hoi","body_search_":"ABC","name_":"Test cau hoi"}],"list_url":"/hoi-bac-si/danh-sach/?q=abc","object_type":"thread_index"},{"top_score":8.921899,"items":[{"name":"PhĂ²ng KhĂ¡m Nhi Khoa Abc","district":"Äá»‘ng Äa","absolute_url":"/phong-kham-nhi-khoa-abc-12595/tam-than","specialities_nested":[{"name":"TĂ¢m tháº§n","slug":"tam-than"},{"name":"Nhi","slug":"nhi"}],"address":"NhĂ  2 ngĂµ 160 tá»• 40 HĂ o Nam","ward":"Ă” Chá»£ Dá»«a"},{"name":"Nha khoa ABC","district":"PhĂº Nhuáº­n","absolute_url":"/nha-khoa-abc-59460/nha-khoa-tong-quat","specialities_nested":[{"name":"Nha khoa Tá»•ng quĂ¡t","slug":"nha-khoa-tong-quat"}],"address":"39 ThĂ­ch Quáº£ng Äá»©c","ward":"4","main_thumbnail_image":"https://dwbxi9io9o7ce.cloudfront.net/images/2016-03-04_011901.8025640000.jpeg"},{"name":"Gym abc","district":"VÄƒn Giang","absolute_url":"/gym-abc-77186/tham-my","specialities_nested":[{"name":"Tháº©m má»¹","slug":"tham-my"}],"address":"KiĂªu Ká»µ ","ward":"BĂ¡o ÄĂ¡p"},{"name":"Nha khoa ABC","district":"10","absolute_url":"/nha-khoa-abc-36686/nha-khoa-tong-quat","specialities_nested":[{"name":"Nha khoa Tá»•ng quĂ¡t","slug":"nha-khoa-tong-quat"},{"name":"Nha khoa Tháº©m má»¹","slug":"nha-khoa-tham-my"}],"address":"785 Ba ThĂ¡ng Hai","ward":"7"}],"list_url":"/danh-sach/?q=abc","object_type":"place_index"}]';
+    	return $result;
+    }
+    public function comment(Request $rq){
+    	
+   	    if($rq->input('next')!=""){
+    		$rq->session()->put('next',$rq->input('next'));
+    	}
+    	
+    	if($rq->session()->has('user')){
+    		//echo 'aaa';return;
+    		
+    		$id = $rq->input('clinic_id');
+    		$cs =Clinic::find($id);
+    		$comment = new Comment;
+    		$comment->clinic_id = $id;
+    		$comment->user_id=$rq->session()->get('user')->user_id;
+    		$comment->feedback_=$rq->input('rating');
+    		$comment->content= $rq->input('body');
+    		// $comment->name= $rq->input('name');
+    		//$comment->email= $rq->input('email');
+    		$comment->save();
+    		//$tieude = to_slug($baiviet['article_title']);
+    		//if($rq->session()->has('next'))
+    		return redirect('/co-so-y-te/'.$cs->clinic_url.'-'.$id.'/kham-benh#nhan-xet')->with('thongbao','Bạn Bình Luận Thành Công');
+    	}
+    	else{
+    	
+    	     $next= $rq->input('next')!=""? $rq->input('next'):'';
+    		return redirect('/dang-nhap/?next='.$next);
+    		
+    	}
+    }
+    public function newPost(Request $rq){
+    	$body =$rq->input('body');
+    	$thread_id = $rq->input('thread_id');
+    	$hiding_creator = $rq->input("hiding_creator");
+    	$censor_images = $rq->input("censor_images");
+    	$answer_type = $rq->input('reply_as_type');
+    	$answer_id = $rq->input('reply_as_id');
+    	$ans = new Answer;
+    	$ans->question_id = $thread_id;
+    	$ans->hiding_creator= $hiding_creator;
+    	$ans->censor_images = $censor_images;
+    	$ans->answer_content = $body;
+    	$ans->answer_type = $answer_type;
+    	$ans->answer_user_id = $answer_id;
+    	$ans->save();
+    	
+    	$result = array('status'=>'success','answer_type'=>$ans->answer_type,
+    			'post'=>array('body'=>$ans->answer_content,
+    			'all_images'=>'',
+    			'created_at'=>date("Y-m-d H:i:s"),
+    			'created_by'=>array('main_image'=>'',
+    							'name'=>null,
+    							'absolute_url'=>'',
+    							'official'=>false,
+    							'specialities'=>'',
+    							'occupation'=>'',
+    							'experience_sumary'=>''),
+    			
+    			'hiding_creator'=>$hiding_creator,
+    			'id'=>$ans->answer_id,
+    			
+    			));
+    	
+    	echo json_encode($result);
+    }
+    public function datcauhoi(Request $rq){
+    	$email = $rq->input("email");
+    	$title = $rq->input("title");
+    	$body = $rq->input("body");
+    	$name = $rq->input("name");
+    	$hiding_creator = $rq->input("hiding_creator");
+    	$censor_images = $rq->input("censor_images");
+    	$speciality = $rq->input("speciality");
+    	$dob = $rq->input("dob");
+    	$province= $rq->input("province");
+    	$file = $rq->input("images");
+    	$qs = new Question;
+    	$qs->question_title=$title;
+    	$qs->speciality_id = $speciality;
+    	$qs->hiding_creator = $hiding_creator=="false"?'0':'1';
+    	$qs->censor_images = $censor_images=="false"?'0':'1';
+    	$qs->question_content = $body;
+    	$qs->question_url = $this->strtoUrl($title);
+    	$qs->fullname= $name;
+    	$qs->save(); 
+    	$qs->question_url =$qs->question_url."-".$qs->question_id;
+    	$qs->save();
+    	
+    	echo json_encode(array('url'=>"/hoi-bac-si/".$qs->question_url,'id'=>$qs->question_id));
+    }
+    public function test(){
+    	echo 'aaaaab';
+    }
+    
+    
+    public static function strtoUrl($strTitle){
+    	{
+    		$strTitle=strtolower($strTitle);
+    		$strTitle=trim($strTitle);
+    		$strTitle=str_replace(' ','-',$strTitle);
+    		$strTitle=preg_replace("/(ò|ó|ọ|ỏ|õ|ơ|ờ|ớ|ợ|ở|ỡ|ô|ồ|ố|ộ|ổ|ỗ)/",'o',$strTitle);
+    		$strTitle=preg_replace("/(Ò|Ó|Ọ|Ỏ|Õ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ|Ô|Ố|Ổ|Ộ|Ồ|Ỗ)/",'o',$strTitle);
+    		$strTitle=preg_replace("/(à|á|ạ|ả|ã|ă|ằ|ắ|ặ|ẳ|ẵ|â|ầ|ấ|ậ|ẩ|ẫ)/",'a',$strTitle);
+    		$strTitle=preg_replace("/(À|Á|Ạ|Ả|Ã|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ|Â|Ấ|Ầ|Ậ|Ẩ|Ẫ)/",'a',$strTitle);
+    		$strTitle=preg_replace("/(ề|ế|ệ|ể|ê|ễ|é|è|ẻ|ẽ|ẹ)/",'e',$strTitle);
+    		$strTitle=preg_replace("/(Ể|Ế|Ệ|Ể|Ê|Ễ|É|È|Ẻ|Ẽ|Ẹ)/",'e',$strTitle);
+    		$strTitle=preg_replace("/(ừ|ứ|ự|ử|ư|ữ|ù|ú|ụ|ủ|ũ)/",'u',$strTitle);
+    		$strTitle=preg_replace("/(Ừ|Ứ|Ự|Ử|Ư|Ữ|Ù|Ú|Ụ|Ủ|Ũ)/",'u',$strTitle);
+    		$strTitle=preg_replace("/(ì|í|ị|ỉ|ĩ)/",'i',$strTitle);
+    		$strTitle=preg_replace("/(Ì|Í|Ị|Ỉ|Ĩ)/",'i',$strTitle);
+    		$strTitle=preg_replace("/(ỳ|ý|ỵ|ỷ|ỹ)/",'y',$strTitle);
+    		$strTitle=preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/",'y',$strTitle);
+    		$strTitle=preg_replace('/(đ|Đ)/','d',$strTitle);
+    		$strTitle=preg_replace("/[^-a-zA-Z0-9]/",'',$strTitle);
+    		return $strTitle;
+    	}
+    }
+}

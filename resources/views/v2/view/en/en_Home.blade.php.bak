@@ -1,0 +1,477 @@
+@extends('v2/view/en/en_main',['title'=> 'Home'])
+@section('en_content')
+     <div class="global-thread-create-cta">
+            <a href="/hoibacsi/datcauhoi/" class="button">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                <strong>Ask doctor</strong>
+                <span>free</span>
+            </a>
+        </div>
+    <section id="register">
+        <div class="inner clr">
+            <div class="span span2 alone @if(Session::get('user') != null) h-center @endif">
+                <div class="middle-item">
+                    <div><img class="center" src="public/v2/img/home_two_mobiles_en.png" alt="">
+                        <p class="text-center langtr" key="p-home" >Search, look up drug information, care and medical treatment easily, main With a team of more than 1000 reputable doctors and medical facilities nationwide</p>
+                        <div class="apps clr middle-item">
+                            <a href="https://itunes.apple.com/us/app/medixlink/id1443310734?ls=1&amp;mt=8"><img
+                                        src="public/v2/img/appstore.svg" alt=""></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.app.khambenh.bacsiviet"><img
+                                        src="public/v2/img/playstore.svg" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if(Session::get('user') == null)
+                <?php $isLoginTag = false;?>
+                <div class="span span2 alone pp white-bg rounded">
+                    <div class="block-register">
+                        <div class="group-labels clr">
+                            <label class="register-tab  @if($errors->has('errorReg') || session('successReg')) active @else <?php $isLoginTag = true;?> @endif"><span key="dk" class="langtr">Register</span></label>
+                            <label class="login-tab  @if($errors->has('errorlogin') || $isLoginTag) active @endif"><span key="dn" class="langtr">Login</span></label>
+                        </div>
+                        <div class="tab-register @if($errors->has('errorReg') || session('successReg')) active @endif">
+                            @if($errors->has('errorReg'))
+                                <div class="alert alert-danger">
+                                    {{$errors->first('errorReg')}}
+                                </div>
+                            @endif
+                            @if (session('successReg'))
+                                <div class="alert alert-success">
+                                    {{session('successReg')}}
+                                </div>
+                            @endif
+                            <form action="/en/dang-ky" method="post" enctype="miltipart/form-data">
+                                <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+
+                                <div class="group-input">
+                                    <h3 key="ht" class="langtr">FULL NAME</h3>
+                                    <div>
+                                        <input type="text" name="name" id="name" placeholder="Full name">
+                                    </div>
+                                </div>
+                                <div class="group-input">
+                                    <h3 key="sdt" class="langtr">PHONE</h3>
+                                    <div>
+                                        <input type="text" name="mobile_phone" id="phone" placeholder="Phone">
+                                    </div>
+                                </div>
+                                <div class="group-input">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <h3 key="gen" class="langtr">GENDER</h3>
+                                            <select name="gender" class="form-control test" required="" id="gender"
+                                                    type="text">
+                                                <option key="oth" class="langtr" value="3">OTHER</option>
+                                                <option key="male" class="langtr" value="1">MALE</option>
+                                                <option key="fem" class="langtr" value="2">FEMALE</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 form-group">
+                                            <h3 key="ltk" class="langtr">ACCOUNT TYPE</h3>
+                                            <select class="form-control test" name="type" required="">
+                                                <option value="user" key="user" class="langtr" selected="selected">User</option>
+                                                <option key="doc" class="langtr" value="professional">Doctor</option>
+                                                <option key="qlpk" class="langtr" value="place">Clinic management</option>
+                                                <option key="drug" class="langtr" value="drugstore">Drugstore</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group-input text">
+                                    <h3 key="dce" class="langtr">EMAIL ADDRESS</h3>
+                                    <div>
+                                        <input type="text" name="email" id="user" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="group-input text">
+                                    <h3>PASSWORD</h3>
+                                    <div>
+                                        <input type="password" name="password"
+                                               placeholder="The password must be at least 5 characters in length">
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div class="fcenter">
+                                    <button type="submit" key="dk"  class="btn btn-ok btn-rounded langtr" value="">Register</button>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="tab-login @if($errors->has('errorlogin') || $isLoginTag) active @endif">
+                            <form method="post" action="/en/dang-nhap" name="login">
+                                <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                                <input type="hidden" name="next" value="{{Request::get('next')}}"/>
+                                <p>*All fields are required</p>
+                                <div class="group-input">
+                                    <h3>USERNAME</h3>
+                                    <div>
+                                        <input name="email" required="" type="text" placeholder="User name">
+                                    </div>
+                                </div>
+                                <div class="group-input">
+                                    <h3>PASSWORD</h3>
+                                    <div>
+                                        <input name="password" required="" type="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                {{--<div class="req"><span>Quên mật khẩu?</span> <a href="#" class="alink">Tạo lại mật khẩu</a></div>--}}
+                                <div class="req">
+                                    @if($errors->has('errorlogin'))
+                                        <div class="form-row">
+                                            <div class="alert alert-danger">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <p style="color: #E84F5E;">{{$errors->first('errorlogin')}} </p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="fcenter">
+                                    <button type="submit" key="dn"  class="btn btn-ok btn-rounded langtr" value="">Login</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            @endif
+        </div>
+        <div id="stuffs">
+            <div class="inner inner2">
+                <h2 class="cat-title"><span key="gt" class="title langtr">Communication</span></h2>
+                <em key="conn" class="langtr">Connect online health wherever you are</em></div>
+            <div class="inner">
+                <div class="com-slider owl-carousel owl-theme">
+                    <div class="item" data-aos="fade-up">
+                        <figure><img src="public/v2/img/slider-1.jpg" alt="">
+                            <figcaption>
+                                <p key="func" class="langtr">1. The function of searching drugs, searching for pharmaceuticals in the list of over 60,000 types drug</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="item" data-aos="fade-up">
+                        <figure><img src="public/v2/img/slider-2.jpg" alt="">
+                            <figcaption>
+                                <p key="ssick" class="langtr">2. Look up disease with her more than 50,000 diseases</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="item" data-aos="fade-up">
+                        <figure><img src="public/v2/img/slider-3.jpg" alt="">
+                            <figcaption>
+                                <p key="catedt" class="langtr">3. List of more than 1000 doctors nationwide on the system</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="item" data-aos="fade-down">
+                        <figure><img src="public/v2/img/slider-4.jpg" alt="">
+                            <figcaption>
+                                <p key="gquest" class="langtr">4. Send questions directly on the web</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="item" data-aos="fade-in">
+                        <figure><img src="public/v2/img/slider-5.jpg" alt="">
+                            <figcaption>
+                                <p key="chatdt" class="langtr">5. Chat text directly with a good doctor on the App on the phone anytime, anywhere</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="item" data-aos="fade-in">
+                        <figure><img src="public/v2/img/slider-6.jpg" alt="">
+                            <figcaption>
+                                <p key="chataudi" class="langtr">6. Chat Audio speaks directly to doctors anytime, anywhere</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="item" data-aos="fade-in">
+                        <figure><img src="public/v2/img/slider-7.jpg" alt="">
+                            <figcaption>
+                                <p key="chatvideo" class="langtr">7. Video chat webcam camera talk directly with the doctor anytime, anywhere</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+            <div class="inner inner2">
+                <div class="block-stuffs clr">
+                    <div class="span span2 m alone">
+                        <a href="/bai-viet">
+                            <div class="block-stuff" data-aos="fade-up">
+                                <figure><img src="public/v2/img/icon-section-1.svg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key="news" class="langtr">NEWS</h3>
+                                    <p key="newsmedic" class="langtr fs1">A variety of medical news and articles</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="/bai-viet/danh-sach-nha-thuoc">
+                            <div class="block-stuff" data-aos="fade-up">
+                                <figure><img src="public/v2/img/icon-section-3.svg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key="dmnt" class="langtr">LIST OF DRUGS</h3>
+                                    <p key="dmnt2" class="langtr fs1">More than 50,000 pharmacies nationwide</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="/thuoc">
+                            <div class="block-stuff" data-aos="fade-up">
+                                <figure><img src="public/v2/img/icon-section-5.svg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key="smedic" class="langtr">MEDICINE</h3>
+                                    <p key="smedic2" class="langtr fs1">Information over 50,000 drugs</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="span span2 m alone">
+                        <a href="/benh">
+                            <div class="block-stuff" data-aos="fade-up">
+                                <figure><img src="public/v2/img/icon-section-2.svg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key="ssick1" class="langtr">RESEARCH IN DISEASE</h3>
+                                    <p key="ssick2" class="langtr fs1">Look up more than 60,000 types of diseases</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="/danh-sach-bac-si">
+                            <div class="block-stuff" data-aos="fade-up">
+                                <figure><img src="public/v2/img/icon-section-4.svg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key="dmbs1" class="langtr">DOCTOR'S LIST</h3>
+                                    <p key="dmbs2" class="langtr fs1">More than 15,000 doctors linked information</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="/danh-sach">
+                            <div class="block-stuff" data-aos="fade-up">
+                                <figure><img src="public/v2/img/icon-section-7.svg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key="dmpk1" class="langtr">LIST OF DEPARTMENTS</h3>
+                                    <p key="dmpk2" class="langtr fs1">More than 10,000 examination rooms and hospitals nationwide</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="counters">
+        <div class="inner">
+            <div class="has-bg clr">
+                <div class="span span4 m alone text-center">
+                    <h1 class="counter ctr1" data-count="10968">0</h1>
+                    <em key="cli" class="langtr">Clinic</em></div>
+                <div class="span span4 m alone text-center">
+                    <h1 class="counter ctr2" data-count="15121">0</h1>
+                    <em key="doc" class="langtr">Doctor</em></div>
+                <div class="span span4 m alone text-center">
+                    <h1 class="counter ctr3" data-count="51345">0</h1>
+                    <em key="drug" class="langtr">Drugstore</em></div>
+                <div class="span span4 m alone text-center">
+                    <h1 class="counter ctr4" data-count="112652">0</h1>
+                    <em key="panti" class="langtr">Patient</em></div>
+            </div>
+        </div>
+    </section>
+    <section id="services">
+        <div class="inner">
+            <div class="block-services">
+                <div class="v-list" data-aos="fade-up">
+                    <h2 key="sv" class="heading langtr">Services</h2>
+                    <ul>
+                        <li> <a key="svp" class="langtr fs1" href="#"> Patient transport service </a> </li>
+                        <li> <a key="sve" class="langtr fs1" href="#"> Home examination services </a> </li>
+                        <li> <a key="svephye" class="langtr fs1" href="#"> Routine home health checkup </a> </li>
+                        <li> <a key="svnur" class="langtr fs1" href="#"> Home nursing services </a> </li>
+                        <li> <a key="svnvl" class="langtr fs1" href="#"> Home physical therapy services </a> </li>
+                        <li> <a key="svnbl" class="langtr fs1" href="#"> Home test blood collection service </a> </li>
+                        <li> <a key="svj" class="langtr fs1" href="#"> Jobs </a> </li>
+                    </ul>
+                    {{--<a href="#" class="btn btn-default rounded"></a>--}}
+                </div>
+                <div class="h-list">
+                    <h2 class="cat-title"><span class="title"></span></h2>
+                    <em key="svs" class="langtr">Support services</em>
+                    <div class="sv-slider owl-carousel owl-theme">
+                        <div class="item" data-aos="fade-up">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/ambulance.jpg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key = "svvc" class = "langtr"> Patient transport service </h3>
+                                    <p key = "svvc2" class = "langtr fs"> Medixlink receives transport of patients from hospitals and private homes in Ho Chi Minh City
+                                        Minh returned
+                                        all provinces in the country. </br>
+                                        Transportation: Ambulance. </br>
+                                        Support facilities: Oxygen, breathing machine, medicine, .. </br>
+                                        Support personnel: When your request is met, medixlink keeps Nursing with you
+                                        with
+                                        patient. </br>
+                                        A special case will keep the doctor with the patient. </br>
+                                        Service time: 24/7. </br>
+                                        Please contact us via phone number: </br> +84 393 167 234 </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item" data-aos="fade-up">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/khamtainha.jpg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key = "svh" class = "langtr"> Home examination services </h3>
+                                    <p key = "svh2" class = "langtr fs"> <strong> Service order </strong> </br>
+                                        - Medical examination doctor </br>
+                                        - Doctor records medical records </br>
+                                        - Health counselor </br>
+                                        - Doctors issue medical orders </br>
+                                        - Doctors arrange a follow-up schedule </br>
+                                        <strong> Highlights: </strong> </br>
+                                        - You will know the whole process of the doctor's examination. </br>
+                                        - The family will be consulted directly by the doctor, directly discuss with the doctor
+                                        believe
+                                        about relatives' health. </br>
+                                        - You will not have to take your loved ones to the hospital without waiting
+                                        wait. </br>
+                                        - Saigon family doctor comes to the house to serve according to the most appropriate time for
+                                        precious
+                                        </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item" data-aos="fade-down">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/khamdinhkytongquat.jpg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key = "svh5" class = "langtr"> Periodic general health check at home </h3>
+                                    <p key = "svh6" class = "langtr fs"> <strong> Service order </strong> </br>
+                                        - Take blood for testing at home
+                                        - Ultrasound at home </br>
+                                        - Home electrocardiogram measurement </br>
+                                        - Doctor examining and reading test results </br>
+                                        - Health counselor </br>
+                                        - Doctor records health records </br>
+                                        - Doctors schedule the next health check </br>
+                                        <strong> Highlights: </strong> </br>
+                                        - Customers do not need to go to the hospital to wait in line </br>
+                                        - Saigon family doctor comes to the house to serve. </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item" data-aos="fade-in">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/dieuduongtainha.jpg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key = "svh7" class = "langtr"> Nursing home service </h3>
+                                    <p key = "svh8" class = "langtr fs"> <strong> Service order </strong> </br>
+                                        - Infusion </br>
+                                        - Injecting drugs </br>
+                                        - Changing bandages </br>
+                                        - Care of catheters placed on patients </br>
+                                        - Smoking conversation viscous </br>
+                                        <strong> Highlights: </strong> </br>
+                                        - Customers do not need to go to the hospital to wait in line </br>
+                                        - Saigon family doctor comes to the service house </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item" data-aos="fade-in">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/vatlytrilieu.jpg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key = "svh9" class = "langtr"> Physical therapy training at home </h3>
+                                    <p key = "svh10" class = "langtr fs"> <strong> Service order </strong> </br>
+                                        - Whole body exercise </br>
+                                        - Massage </br>
+                                        - Electrotherapy </br>
+                                        - Shortwave therapy </br>
+                                        <strong> Highlights: </strong> </br>
+                                        - Customers do not need to go to the hospital to wait in line </br>
+                                        - Saigon family doctor comes to the service house </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item" data-aos="fade-in">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/laymauxetnghiem.jpg" alt=""></figure>
+                                <div class="info">
+                                    <h3 key = "svh11" class = "langtr"> Home blood test services </h3>
+                                    <p key = "svh12" class = "langtr fs"> <strong> Service order </strong> </br>
+                                        - Fasting, drinking early in the morning </br>
+                                        - Technician to take blood at home </br>
+                                        - Send a blood sample to the laboratory </br>
+                                        - Doctors read and inform results to patients </br>
+                                        <strong> Highlights: </strong> </br>
+                                        - Customers do not need to go to the hospital to wait in line </br>
+                                        - Saigon family doctor comes to the service house </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item" data-aos="fade-up">
+                            <a href="#" class="hover hover-zoom">
+                                <figure><img src="public/v2/img/job.jpg" alt=""></figure>
+                                <div class="info">
+                                   <h3 key = "svh13" class = "langtr"> Jobs </h3>
+                                    <p key = "svh14" class = "langtr fs"> Is a job portal in the health sector where doctors, medical doctors, and midwives post resumes
+                                        Finding
+                                        work and clinics, hospitals to find candidates </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="specialists">
+        <div class="inner">
+           <h2 class = "cat-title"> <span key = "bsnb1" class = "title langtr"> Featured doctors </span> </h2>
+            <em key = "bsnb2" class = "langtr"> List of highly interactive doctors on the system </em>
+            <div class="content">
+                <div class="dr-slider owl-carousel owl-theme">
+                    @if(isset($doctors))
+                        @foreach($doctors as $doctor)
+                            <div class="item" data-aos="fade-up">
+                                <figure class="hover hover-zoom"><img src="
+                @if($doctor->profile_image == '')
+                                            https://n6-img-fp.akamaized.net/free-vector/doctor-character-background_1270-84.jpg?size=338&ext=jpg
+                @else
+                                    {{url('public/images/doctor/'.$doctor->profile_image)}}"
+                                                                      alt="{{$doctor->doctor_name}}"
+                                                                      @endif title="{{$doctor->doctor_name}}">
+                                    <figcaption><a href="#"></a>
+                                        <span>{{$doctor->doctor_name}}</span><em>{{$doctor->doctorspeciality->speciality->speciality_name}}</em>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        @endforeach
+                @endif
+                    {{--<div class="item" data-aos="fade-up">--}}
+                    {{--<figure class="hover hover-zoom"><img src="public/v2/img/photo-1541044714743-82d583a7bd64.jpg" alt="">--}}
+                    {{--<figcaption> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-google-plus"></i></a> <span>Tên bác sĩ</span><em>Chức vụ</em> </figcaption>--}}
+                    {{--</figure>--}}
+                    {{--</div>--}}
+                    {{--<div class="item" data-aos="fade-up">--}}
+                    {{--<figure class="hover hover-zoom"><img src="public/v2/img/photo-1544723495-432537d12f6c.jpg" alt="">--}}
+                    {{--<figcaption> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-google-plus"></i></a> <span>Tên bác sĩ</span><em>Chức vụ</em> </figcaption>--}}
+                    {{--</figure>--}}
+                    {{--</div>--}}
+                    {{--<div class="item" data-aos="fade-down">--}}
+                    {{--<figure class="hover hover-zoom"><img src="public/v2/img/photo-1549024080-61c44c983c91.jpg" alt="">--}}
+                    {{--<figcaption> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-google-plus"></i></a> <span>Tên bác sĩ</span><em>Chức vụ</em> </figcaption>--}}
+                    {{--</figure>--}}
+                    {{--</div>--}}
+                    {{--<div class="item" data-aos="fade-in">--}}
+                    {{--<figure class="hover hover-zoom"><img src="public/v2/img/photo-1494571180607-f17765ead771.jpg" alt="">--}}
+                    {{--<figcaption> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-twitter"></i></a> <a href="#"><i class="fab fa-google-plus"></i></a> <span>Tên bác sĩ</span><em>Chức vụ</em> </figcaption>--}}
+                    {{--</figure>--}}
+                    {{--</div>--}}
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

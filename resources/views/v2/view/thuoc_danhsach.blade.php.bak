@@ -1,0 +1,49 @@
+@extends('v2/structor/main',['title'=> 'Thuốc'])
+@section('content')
+<br>
+<div class="content">
+	<section section-top>
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-12 ">
+	            <ol class="breadcrumb">
+	                <li><a href="/">Trang chủ</a></li>
+	                <li>&nbsp;>&nbsp;</li>
+	                <li>Thuốc</li>
+	            </ol>
+	        </div>
+	    </div>
+	    <div class="row">
+	    	<div class="col-md-3">
+	    		<h3 class="h3">Danh sách thuốc</h3>
+	    	</div>
+	    </div>
+	    <div class="row">
+	    	@foreach($medicines as  $medicine )
+                <div class="col-md-4  item-section medic">
+                	<ul>
+                		<li>
+                			<?php $tieude = App\Medicine::to_slug($medicine['description']);
+								 		 ?>
+								<a href="/thuoc/{{$tieude}}-{{$medicine['medicine_id'] }}">
+								{{  $medicine['description']  }} </a>
+                    		<p>{{  $medicine['production_company']  }}   {{  $medicine['manufacturer']  }} </p>
+                		</li>
+                	</ul>
+                </div>
+             @endforeach	
+	    </div>
+	    <div class="row" >
+	    	<div class="col-md-2"></div>
+	    	<div class="col-md-4 pagination">
+	    		<span >
+			    	{!! $medicines->appends(request()->input())->links(); !!}
+			 	</span>
+	    	</div>
+	    	
+	    </div>
+	</div>
+	</section>
+</div>
+
+@endsection

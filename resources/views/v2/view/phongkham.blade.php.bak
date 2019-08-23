@@ -1,0 +1,85 @@
+@extends('v2/structor/main',['title'=> 'Phòng khám'])
+@section('content')
+<?php $specs = App\Speciality::all();$selectsp = request()->input('speciality');?>
+<div id="content">
+    <section class="section-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="/">Trang chủ</a></li>
+                        <li>&nbsp;>&nbsp;</li>
+                        <li>Danh sách phòng khám</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="title">Danh sách phòng khám</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="section-body nav-section">
+                        <h4>Chuyên khoa</h4>
+                        <ul class="list-item-1">
+                            
+                            @foreach($specs as $sp)
+                                <li>
+                                    <a href="/danhsach-phongkham?speciality={{$sp->specialty_url}}">{{$sp->speciality_name}}</a>
+                                </li>
+                           @endforeach
+                        </ul>
+                        <select class="form-control list-item-2">
+                            <option value="">Chuyên khoa</option>
+                            @foreach($specs as $sp)
+                                <option value="/danhsach-phongkham?speciality={{$sp->specialty_url}}" @if($sp->specialty_url===$selectsp)selected="selected" @endif>{{$sp->speciality_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12">
+                    <div class="section-body">
+                        <h4>Danh sách phòng khám</h4>
+                        <div class="row">
+                            @foreach ($clinics as $cl)
+                                <div class="col-md-6 item-section">
+                                    <a href="/phongkham-chitiet/{{$cl->clinic_url}}-{{$cl->clinic_id}}/kham-benh">{{$cl->clinic_name}}</a>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="pagination paging">
+                        <span class="step-links">
+                            {!! $clinics->appends(request()->input())->links(); !!} 
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                resize();
+                function resize() {
+                    let width = $(window).width();
+                    if (width < 768) {
+                        $('.list-item-1').hide();
+                        $('.list-item-2').show();                    }
+                    else {
+                        $('.list-item-1').show();
+                        $('.list-item-2').hide();
+                    }
+                }
+
+                $(window).on('resize', function(){
+                    resize();
+                });
+
+                $('.list-item-2').on('change', function() {
+                   window.location.href = $(this).val();
+                });
+            });
+        </script>
+    </section>
+</div>
+@endsection
