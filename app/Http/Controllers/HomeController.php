@@ -792,6 +792,8 @@ class HomeController extends Controller
                         $clinic->save();
                         // Thắng mod 20181107 end
                     } else if ($user->user_type_id == 4) {
+                        $user->user_id = $user->user_id + 40000000;
+                        $user->save();
                         $patientNew = $user->createPatient();
                         $patientNew->save();
                         if($present != null && $present != "") {
@@ -1078,12 +1080,15 @@ class HomeController extends Controller
         $username = $rq->get('username');
         $id = $rq->get('qwd');
         $present = $rq->get('presenter');
+        $fullname = null;
+        if ($rq->has('fullname')) {
+            $fullname = $rq->get('fullname');
+        }
 
         $user_type = "";
         $u = Users::where('id_facebook', $id)->first();
 
         if ($u) {
-
             $rq->session()->put('user', $u);
             if ($u->user_type_id == 1) {
                 $user_type = "user";
@@ -1092,6 +1097,10 @@ class HomeController extends Controller
                     $patientNew->save();
                 }
                 $balance = $u->patient->balance;
+                if (($u->fullname == "") && ($fullname != null)) {
+                    $u->fullname = $fullname;
+                    $u->save();
+                }
                 return json_encode(array('isLogin' => true, 'user' => $u, 'balance' => $balance, 'msg' => 'Login Success', 'user_type' => $user_type, 'image' => $u->avatar, 'paid' => $u->paid, 'id' => $id));
             } else if ($u->user_type_id == 2) {
                 $user_type = "doctor";
@@ -1104,7 +1113,9 @@ class HomeController extends Controller
         } else {
 
             $u = new Users;
-            //$u->fullname = $user->name;
+            if ($fullname != null) {
+                $u->fullname = $fullname;
+            }
             $u->email = $username;
             $u->id_facebook = $id;
             $u->user_type_id = 1;
@@ -2461,6 +2472,7 @@ class HomeController extends Controller
                 ->join('doctor_speciality', 'doctor.doctor_id', '=', 'doctor_speciality.doctor_id')
                 ->join('speciality', 'speciality.speciality_id', '=', 'doctor_speciality.speciality_id')
                 ->where('doctor_speciality.speciality_id', $speciality_id)
+                ->where('doctor.featured', '!=',0)
                 ->orderBy('doctor.top', 'desc')
                 ->orderBy('doctor.featured', 'desc')
                 ->orderBy('doctor.vote', 'desc')

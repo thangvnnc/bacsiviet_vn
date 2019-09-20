@@ -6,6 +6,7 @@ use App\Drugstore;
 use App\Locations;
 use App\Patient;
 use App\User;
+use DateTime;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Question;
@@ -187,6 +188,9 @@ class ViewController extends Controller
                 $user->user_type_id = $type;
                 $user->paid = 1;
                 if ($user->save()) {
+                    $user = Users::where('email', $email)->first();
+                    $user->user_id = $user->user_id + (10000000 * $user->user_type_id);
+                    $user->save();
 
                     // Tạo dữ liệu partient tài khoản
                     $patientNew = $user->createPatient();
@@ -202,9 +206,18 @@ class ViewController extends Controller
                     }
 
                     if ($user->user_type_id == 1) {
-
+                        $patientNew = $user->createPatient();
+                        $patientNew->save();
+                        if ($present != null && $present != "") {
+                            $user->present = $present;
+                            $user->save();
+                            $collaboratorsUser = CollaboratorsUser::where('code', $present)->first();
+                            if ($collaboratorsUser != null) {
+                                $patientNew->balance += $collaboratorsUser->promotion;
+                                $patientNew->save();
+                            }
+                        }
                     } else if ($user->user_type_id == 2) {
-
                         $doctor = new Doctor;
                         $doctor->doctor_name = 'BS ' . $user->fullname;
                         $doctor->doctor_url = $this->to_slug('BS ' . $user->fullname);
@@ -897,9 +910,17 @@ class ViewController extends Controller
                     return view('v2/view/taikhoan_vietbai', ['catalogs' => $catalogs]);
                     break;
                 case "doanhso":
+                    $dateFrom = '1970-01-01';
+                    if($rq->has('date_from')) {
+                        $dateFrom = $rq->get('date_from');
+                    }
+                    $dateTo = date('Y-m-d');
+                    if($rq->has('date_to')) {
+                        $dateTo = $rq->get('date_to');
+                    }
                     $userLogin = $rq->session()->get('user');
-                    $callTimeWithDoctor = Calltime::where('doctor_email', $userLogin->email)->orderBy('call_time_id', 'desc')->paginate(50);
-                    $queryTotal = DB::select("SELECT SUM(times * unit) as `total` FROM `call_time` WHERE `doctor_email`='$userLogin->email'");
+                    $callTimeWithDoctor = Calltime::where('doctor_email', $userLogin->email)->where('created_at', '>=', $dateFrom)->where('created_at', '<=', $dateTo)->orderBy('call_time_id', 'desc')->paginate(50);
+                    $queryTotal = DB::select("SELECT SUM(times * unit) as `total` FROM `call_time` WHERE `created_at` >= '$dateFrom' AND `created_at` <= '$dateTo' AND `doctor_email`='$userLogin->email'");
                     $total = $queryTotal[0]->total;
                     if($total == null)
                     {
@@ -910,9 +931,18 @@ class ViewController extends Controller
                 case "doanh-thu-bac-si":
                     if($rq->has('doctor_email'))
                     {
+                        $dateFrom = '1970-01-01';
+                        if($rq->has('date_from')) {
+                            $dateFrom = $rq->get('date_from');
+                        }
+                        $dateTo = date('Y-m-d');
+                        if($rq->has('date_to')) {
+                            $dateTo = $rq->get('date_to');
+                        }
+
                         $doctorEmail = $rq->get('doctor_email');
-                        $callTimeWithDoctor = Calltime::where('doctor_email', $doctorEmail)->orderBy('call_time_id', 'desc')->paginate(50);
-                        $queryTotal = DB::select("SELECT SUM(times * unit) as `total` FROM `call_time` WHERE `doctor_email`='$doctorEmail'");
+                        $callTimeWithDoctor = Calltime::where('doctor_email', $doctorEmail)->where('created_at', '>=', $dateFrom)->where('created_at', '<=', $dateTo)->orderBy('call_time_id', 'desc')->paginate(50);
+                        $queryTotal = DB::select("SELECT SUM(times * unit) as `total` FROM `call_time` WHERE `created_at` >= '$dateFrom' AND `created_at` <= '$dateTo' AND `doctor_email`='$doctorEmail'");
                         $total = $queryTotal[0]->total;
                         if($total == null)
                         {

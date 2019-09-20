@@ -154,6 +154,23 @@ class en_ViewController extends Controller
                 $user->user_type_id = $type;
                 $user->paid = 1;
                 if ($user->save()) {
+                    $user = Users::where('email', $email)->first();
+                    $user->user_id = $user->user_id + (10000000 * $user->user_type_id);
+                    $user->save();
+
+                    // Tạo dữ liệu partient tài khoản
+                    $patientNew = $user->createPatient();
+                    $patientNew->save();
+                    if ($present != null && $present != "") {
+                        $user->present = $present;
+                        $user->save();
+                        $collaboratorsUser = CollaboratorsUser::where('code', $present)->first();
+                        if ($collaboratorsUser != null) {
+                            $patientNew->balance += $collaboratorsUser->promotion;
+                            $patientNew->save();
+                        }
+                    }
+
                     if ($user->user_type_id == 1) {
                         $patientNew = $user->createPatient();
                         $patientNew->save();
@@ -167,7 +184,6 @@ class en_ViewController extends Controller
                             }
                         }
                     } else if ($user->user_type_id == 2) {
-
                         $doctor = new Doctor;
                         $doctor->doctor_name = 'BS ' . $user->fullname;
                         $doctor->doctor_url = $this->to_slug('BS ' . $user->fullname);

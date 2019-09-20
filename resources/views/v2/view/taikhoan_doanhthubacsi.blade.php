@@ -6,15 +6,17 @@
 	<section class="sec-acc-home" style="margin-bottom: 20px;">
 		<form action="/taikhoan/doanh-thu-bac-si" method="get">
 			<input type="hidden" name="_token" value="{{csrf_token()}}">
-			<div style="float: right;">
-				<input name="doctor_email" placeholder="Username bác sĩ" class="form-control" type="text"></div>
-		</form>
+
 		<div class="section-header">
 			<h2 style="margin-top: 15px;"><i class="fa fa-fw fa-list" aria-hidden="true"></i>
 				Doanh thu của bác sĩ
 			</h2>
+			<div style="float: left;"><input name="doctor_email" placeholder="Username bác sĩ" class="form-control" type="text"></div>
+			<div style="float: right;"><input value="Tìm" class="form-control" type="submit"></div>
+			<div style="float: right;"><input name="date_to" class="form-control" type="date"></div>
+			<div style="float: right;"><input name="date_from" class="form-control" type="date"></div>
 		</div>
-
+		</form>
 		<div class="section-body">
 			<table class="table">
 				<thead class="thead-light">
@@ -35,9 +37,16 @@
 						?>
 						<tr>
 							<th scope="row">{{$calltime->call_time_id}}</th>
-							<td>{{$userCall->fullname}}</td>
+							<td><?php
+								if (isset($userCall->fullname))
+								{
+								    echo $userCall->fullname;
+								}
+								else {
+                                    echo "<strong>Not found</strong>";
+								};?>
+							</td>
 							<td>
-
 								@if($calltime->type == 0)
 									{{$calltime->times}} Phút
 								@else
