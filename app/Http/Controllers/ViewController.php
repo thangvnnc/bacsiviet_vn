@@ -177,7 +177,8 @@ class ViewController extends Controller
                 $user->addpress = 'Việt Nam';
                 $user->password = Hash::make($password);
 
-                if(preg_match("/^[a-z0-9]+$/", $email) == 1 || count($email) < 6) {
+                if(preg_match('/^[a-zA-Z0-9 ]+$/', $email) == 0  || strlen($email) < 6) {
+                    return preg_match('/^[a-zA-Z0-9 ]+$/', $email);
                     $errors = new MessageBag(['errorReg' => 'Tên đăng nhập phải là ký tự chữ thường và số, bắt buộc từ 6 ký tự trở lên.']);
                     return redirect()->back()->withInput()->withErrors($errors);
                 }
