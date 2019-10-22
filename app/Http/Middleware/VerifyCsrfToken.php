@@ -39,6 +39,12 @@ class VerifyCsrfToken extends BaseVerifier
         '/api/danh-sach/phong-kham',
         '/api/doi-mat-khau',
         '/api/danh-sach/tinh-thanh',
-        '/api/thanh-toan-tin-nhan'
+        '/api/thanh-toan-tin-nhan',
+        '/apihoibacsi/datcauhoi',
+        '/apihoibacsi/danhsach',
+        '/apihoibacsi/traloicauhoi',
+        '/apihoibacsi/danhsachbinhluan',
+        '/api/upload-image',
+
     ];
 }

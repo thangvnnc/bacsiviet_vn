@@ -232,6 +232,36 @@ class HomeController extends Controller
         }
     }
 
+    public function apihoibacsiPost(Request $rq)
+    {
+        $title = $rq->title;
+        $body = $rq->body;
+        $specialities = $rq->specialities;
+        if ($rq->name != NULL) {
+            $name = $rq->name;
+        } else {
+            $name = "Giấu tên";
+        }
+
+        $email = $rq->email;
+        $user_id = $rq->user_id;
+
+        if ($title === null || $body === null || $email === null) {
+            $errors = new MessageBag(['errorMs' => 'Vui lòng điền vào các trường có dấu *']);
+            return redirect()->back()->withInput()->withErrors($errors);
+        } else {
+            $question = new Question;
+            $question->topic_id = $specialities;
+            $question->user_id = $user_id;
+            $question->fullname = $name;
+            $question->question_title = $title;
+            $question->question_content = $body;
+            $question->question_url = $this->to_slug($title);
+            $question->speciality_id = $specialities;
+            $question->save();
+            return redirect('/hoi-bac-si');
+        }
+    }
 
     public function hoibacsiview(Request $rq, $id)
     {

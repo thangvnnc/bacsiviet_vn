@@ -229,6 +229,7 @@ Route::post('/vi-tri/timkiem',        'HomeController@searchDistance');
 
 
 Route::post('/api/chuyen-khoa',             'HomeController@apiChuyenKhoa');
+Route::post('/api/danh-sach-cau-hoi',       'HomeController@apidscauhoi');
 Route::post('/api/danh-sach/bac-si',        'HomeController@apiDanhSachBacSi');
 Route::post('/api/danh-sach/phong-kham',    'HomeController@apiDanhSachPhongKham');
 Route::post('/api/doi-mat-khau',            'HomeController@apiDoiMatKhau');
@@ -267,10 +268,19 @@ Route::get('/baiviet/{qid}','ViewController@chitietbaiviet');
 Route::get('/chuyenmuc/{qid}','ViewController@chuyenmuc');
 
 Route::post('/hoibacsi/datcauhoi', 'ViewController@hoibacsiPost');
+Route::post('/hoibacsi/{id}','ViewController@bacsitraloi');
 Route::get('/hoibacsi', 'ViewController@hoibacsi');
 Route::get('/hoibacsi/tuyenchon/{id}','ViewController@hoibacsi_tuyenchon');
 Route::get('/hoibacsi/{id}','ViewController@hoibacsiview');
-Route::post('/hoibacsi/{id}','ViewController@bacsitraloi');
+
+Route::post('/apihoibacsi/datcauhoi', 'ViewController@apiHoiBacSiPost');
+Route::post('/apihoibacsi/danhsach', 'ViewController@apiDanhSachCauHoi');
+Route::post('/apihoibacsi/traloicauhoi', 'ViewController@apiTraLoiCauHoi');
+Route::post('/api/upload-image', 'ViewController@apiUploadHinh');
+Route::post('/apihoibacsi/danhsachbinhluan', 'ViewController@apiDanhSachBinhLuan');
+
+Route::post('/apihoibacsi/traloi/{id}','ViewController@apiBacSiTraLoi');
+
 Route::get('/chuyenkhoa','ViewController@chuyenkhoa');
 Route::get('/chuyenkhoa/{id}/','ViewController@chuyenkhoadetail');
 

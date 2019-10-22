@@ -176,6 +176,12 @@ class ViewController extends Controller
                 $user->gender = $gender;
                 $user->addpress = 'Việt Nam';
                 $user->password = Hash::make($password);
+
+                if(preg_match("/^[a-z0-9]+$/", $email) == 1 || count($email) < 6) {
+                    $errors = new MessageBag(['errorReg' => 'Tên đăng nhập phải là ký tự chữ thường và số, bắt buộc từ 6 ký tự trở lên.']);
+                    return redirect()->back()->withInput()->withErrors($errors);
+                }
+
                 if ($rq->type == "user") {
                     $type = 1;
                 } else if ($rq->type == "professional") {
@@ -650,7 +656,6 @@ class ViewController extends Controller
             $baiviet = Article::where('catalog_id', $id)->orderBy('article_id', 'ASC')->paginate(10);
             return view('v2/view/chuyen_muc', ['Catalogs' => $Catalogs, 'baiviet' => $baiviet, 'baiviet_new' => $baiviet_new]);
         } else
-
             $baiviet_new = Article::where('catalog_id', $id)->orderBy('article_id', 'DESC')->limit(1)->first();
         $baiviet = Article::where('catalog_id', $id)->orderBy('article_id', 'ASC')->paginate(10);
         return view('v2/view/chuyen_muc', ['Catalogs' => $Catalogs, 'baiviet' => $baiviet, 'baiviet_new' => $baiviet_new])->withPost($baiviet);
@@ -745,6 +750,93 @@ class ViewController extends Controller
         return view('v2/view/hoibacsiview', compact('ads'))->with('question', $question);
     }
 
+    public function apiDanhSachCauHoi(Request $rq) {
+        $speciality_id = $rq->speciality_id;
+        $questions = \App\Question::where('speciality_id', $speciality_id)->select('question_id', 'user_id', 'fullname', 'speciality_id', 'question_title', 'question_content', 'created_at')->paginate(20);
+        return $questions;
+    }
+
+    public function apiHoiBacSiPost(Request $rq)
+    {
+        $question_title = $rq->question_title;
+        $question_content = $rq->question_content;
+        $speciality_id = $rq->speciality_id;
+        if ($rq->fullname != NULL) {
+            $name = $rq->fullname;
+        } else {
+            $name = "Giấu tên";
+        }
+
+        $user_id = $rq->user_id;
+
+        if ($question_title === null || $question_content === null) {
+            $errors["code"] = 1;
+            $errors["message"] = "Data empty";
+            return $errors;
+        } else {
+            $question = new Question;
+            $question->user_id = $user_id;
+            $question->fullname = $name;
+            $question->question_title = $question_title;
+            $question->question_content = $question_content;
+            $question->speciality_id = $speciality_id;
+            if ($question->save()) {
+                $errors["code"] = 0;
+                $errors["content"] = $question->question_id;
+                $errors["message"] = "Success";
+                return $errors;
+            };
+
+            $errors["code"] = -9999;
+            $errors["message"] = "Unknown";
+            return $errors;
+        }
+    }
+
+    public function apiUploadHinh(Request $rq) {
+        if ($rq->hasFile('img')) {
+            $image = $rq->file('img');
+            $name = $image->getClientOriginalName();
+            $path = public_path('/images');
+            $image->move($path, $name);
+            $errors["code"] = 0;
+            $errors["message"] = "Success";
+            return $errors;
+        }
+        else {
+            $errors["code"] = -9999;
+            $errors["message"] = "Unknown";
+            return $errors;
+        }
+    }
+
+    public function apiTraLoiCauHoi(Request $rq) {
+        $answer_user_id = $rq->answer_user_id;
+        $question_id = $rq->question_id;
+        $answer_content = $rq->answer_content;
+
+        $answer = new Answer();
+        $answer->answer_user_id = $answer_user_id;
+        $answer->question_id = $question_id;
+        $answer->answer_content = $answer_content;
+        if ($answer->save()) {
+            $errors["code"] = 0;
+            $errors["message"] = "Success";
+            return $errors;
+        };
+
+        $errors["code"] = -9999;
+        $errors["message"] = "Unknown";
+        return $errors;
+    }
+
+    public function apiDanhSachBinhLuan(Request $rq) {
+        $question_id = $rq->question_id;
+        $anwers = \App\Answer::join('user', 'answer.answer_user_id', '=', 'user.user_id')->where('question_id', $question_id)
+            ->select('answer.answer_id', 'answer.question_id', 'answer.answer_user_id', 'answer.answer_content', 'answer.created_at', 'user.fullname')->get();
+        return $anwers;
+    }
+
     public function hoibacsiPost(Request $rq)
     {
         $title = $rq->title;
@@ -776,7 +868,7 @@ class ViewController extends Controller
         }
     }
 
-    public function bacsitraloi(Request $rq, $id)
+    public function apiBacSiTraLoi(Request $rq, $id)
     {
         // var_dump("fds");die;
         $info = $rq->get('reply_as_information');
@@ -787,6 +879,33 @@ class ViewController extends Controller
         // $question = Question::orderBy('question_id','DESC')->paginate(10);
         // var_dump(json_decode($info));die;
         if (!empty($infoParse) && !empty($thred_id) && !empty($body)) {
+            $answers = new Answer;
+            $answers->question_id = $rq->get('thread_id');
+            $answers->answer_type = $infoParse->reply_as_type;
+            $answers->answer_user_id = $infoParse->reply_as_id;
+            $answers->answer_content = $rq->get('body');
+            $answers->save();
+            $errors["code"] = 0;
+            $errors["content"] = $id;
+            $errors["message"] = "Success";
+        }
+
+        $errors["code"] = 1;
+        $errors["message"] = "Data empty";
+        return $errors;
+    }
+
+    public function bacsitraloi(Request $rq, $id)
+    {
+        // var_dump("fds");die;
+        $info = $rq->get('reply_as_information');
+        $infoParse = json_decode($info);
+        $thread_id = $rq->get('thread_id');
+        $body = $rq->get('body');
+
+        // $question = Question::orderBy('question_id','DESC')->paginate(10);
+        // var_dump(json_decode($info));die;
+        if (!empty($infoParse) && !empty($thread_id) && !empty($body)) {
             $answers = new Answer;
             $answers->question_id = $rq->get('thread_id');
             $answers->answer_type = $infoParse->reply_as_type;

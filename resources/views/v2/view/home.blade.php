@@ -73,9 +73,9 @@
                                     </div>
                                 </div>
                                 <div class="group-input text">
-                                    <h3>EMAIL ADDRESS</h3>
+                                    <h3>Tên đăng nhập</h3>
                                     <div>
-                                        <input type="text" name="email" id="user" placeholder="Email">
+                                        <input type="text" name="email" id="user" placeholder="Tên đăng nhập">
                                     </div>
                                 </div>
                                 <div class="group-input text">

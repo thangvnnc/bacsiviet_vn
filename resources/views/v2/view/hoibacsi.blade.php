@@ -77,10 +77,10 @@ $(document).ready(function(){
                                             <a href="/hoibacsi/tuyenchon/{{\App\Deals::strtoUrl($ques->subject)}}-{{$ques->id}}/" class="readmore">Xem tiếp <i class="fa fa-angle-double-right"></i></a>
                                         </p>
                                     </div>
-                                </article>
-                            </div>
-                        @endif
-                    @endforeach
+                                    </article>
+                                </div>
+                            @endif
+                        @endforeach
                     <div id="col-right">
                         <ul>
                             @foreach($selectquestion as $index=>$ques)
