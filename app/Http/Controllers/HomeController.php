@@ -2309,7 +2309,7 @@ class HomeController extends Controller
             return redirect('/dangnhapcongtac');
         }
         $collaboratorsUsers = $rq->session()->get('collaboratorsUser');
-        $userData = Users::where('present', $collaboratorsUsers->code)->get();
+        $userData = Users::where('present', $collaboratorsUsers->code)->orderBy('created_at', 'desc')->paginate(20);
         return view('danhsach_user_congtacvien', ['userData' => $userData]);
     }
 
@@ -2328,7 +2328,7 @@ class HomeController extends Controller
                                           (SELECT d2.doctor_name, u2.email FROM `doctor` d2 JOIN `user` u2 ON d2.`user_id` = u2.`user_id`) as dt
                                            ON dt.email = ct.doctor_email 
                                            WHERE u.`present`='$collaboratorsUsers->code' GROUP BY u.`user_id`, u.`email`, u.`fullname`, dt.`doctor_name`, u.`phone`
-                                        ");
+                                        ")->paginate(20);
 //        return view('danhsach_user_thoigiandung', ['userData' => $userthoigiandung, 'unit' => $unit]);
         return view('danhsach_user_thoigiandung', ['userData' => $userthoigiandung, 'unit' => $unit]);
     }

@@ -47,7 +47,9 @@
 				@endfor
 				</tbody>
 			</table>
-
+			<div style="padding-left: 25%;" class="view-more">
+				{!!$userData->links()!!}
+			</div>
 		</div>
 	</div>
 </div>

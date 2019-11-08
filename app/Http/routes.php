@@ -219,7 +219,7 @@ Route::get("/test-api",              'HomeController@testapi');
 Route::post("/test-post-api",        'HomeController@testpostapi');
 Route::get('/dangnhapcongtac',       'HomeController@collaborators_login');
 Route::post('/dangnhapcongtac',      'HomeController@collaborators_post_login');
-    Route::get('/congtacvien/danhsach',  'HomeController@collaborators_danhsach');
+Route::get('/congtacvien/danhsach',  'HomeController@collaborators_danhsach');
 Route::get('/congtacvien/thoigiandung',  'HomeController@collaborators_danhsach_thoigiandung');
 Route::get('/congtacvien/dangky',    'HomeController@collaborators_dangky');
 
