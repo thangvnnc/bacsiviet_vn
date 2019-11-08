@@ -2313,6 +2313,30 @@ class HomeController extends Controller
         return view('danhsach_user_congtacvien', ['userData' => $userData]);
     }
 
+    public function collaborators_danhsachnaptien(Request $rq)
+    {
+        if(! $rq->session()->has('collaboratorsUser')){
+            return redirect('/dangnhapcongtac');
+        }
+        $userData = null;
+        if ($rq->has('dates') && $rq->has('datee')) {
+            $dates = $rq->get('dates')." 00:00:00";
+            $datee = $rq->get('datee')." 23:59:59";
+            $collaboratorsUsers = $rq->session()->get('collaboratorsUser');
+            $sql = "SELECT u.`present`, u.`fullname`, u.`email`, u.`phone`, r.`quantity`, r.`created_at` FROM `user` u 
+                                    JOIN `patient` p ON u.`user_id` = p.`user_id` 
+                                    JOIN `recharge` r ON p.`patient_id` = r.`patient_id`
+                                    WHERE r.`created_at` BETWEEN '$dates' AND '$datee' 
+                                    AND `u`.`present` like '$collaboratorsUsers->code'
+                                    ORDER BY r.`created_at` DESC
+                                ";
+
+            $userData = DB::select($sql);
+        }
+
+        return view('danhsach_user_congtacvien_naptien', ['userData' => $userData]);
+    }
+
     public function collaborators_danhsach_thoigiandung(Request $rq)
     {
         if(! $rq->session()->has('collaboratorsUser')){
@@ -2335,7 +2359,7 @@ class HomeController extends Controller
 
     public function collaborators_dangky(Request $rq)
     {
-        $username = $rq->get("username");
+            $username = $rq->get("username");
         $password = $rq->get("password");
         $fullname = $rq->get("fullname");
         $code     = $rq->get("code");

@@ -11,41 +11,53 @@
 <div id="login" class="has-switch-content  all-others">	
 	<div class="position">
 		<div class="content">
-			<h1><i class="fa fa-user" aria-hidden="true"></i> Danh sách user đã nhập code</h1>
-			<a class="btn btn-primary" href="/congtacvien/thoigiandung">Thời gian sử dụng của user</a>
-			<a style="margin-left: 18px" class="btn btn-primary" href="/congtacvien/danhsachnaptien">Danh sách user đã nạp tiền</a>
+			<form action="" method="get">
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+				<div class="section-header">
+					<h2><i class="fa fa-fw fa-list" aria-hidden="true"></i> Danh sách user đã nạp tiền</h2>
+					<div style="float: right;"><input value="Tìm" class="form-control" type="submit"></div>
+					<div style="float: right;"><input name="datee" class="form-control" type="date"></div>
+					<div style="float: right;"><input name="dates" class="form-control" type="date"></div>
+				</div>
+			</form>
 			<table class="table">
 				<thead>
 				<tr>
 					<th><b>STT</b></th>
-					<th><b>Id</b></th>
 					<th><b>Tên</b></th>
 					<th><b>Email</b></th>
 					<th><b>SĐT</b></th>
-					<th><b>Địa chỉ</b></th>
-					<th><b>Ngày tạo</b></th>
+					<th><b>Ngày nạp</b></th>
+					<th><b>Số tiền</b></th>
 				</tr>
 				</thead>
 				<tbody>
+				<?php
+					$tong = 0;
+				?>
 				@for($idx = 0; $idx < count($userData); $idx++)
 				<tr>
 					<td>{{$idx + 1}}</td>
-					<td>{{$userData[$idx]->user_id}}</td>
 					<td>{{$userData[$idx]->fullname}}</td>
 					<td>{{$userData[$idx]->email}}</td>
 					<td>{{$userData[$idx]->phone}}</td>
-					<td>{{$userData[$idx]->addpress}}</td>
 					<td>{{$userData[$idx]->created_at}}</td>
+					<td>{{$userData[$idx]->quantity}}</td>
 				</tr>
+				<?php
+					$tong += $userData[$idx]->quantity;
+				?>
 				@endfor
 				</tbody>
 			</table>
-
-			<div style="padding-left: 25%;" class="view-more">
-
-				{!!$userData->links()!!}
-
+			<div>
+				<strong style="float: right;">Tổng doanh số: {{number_format($tong, 0, '', ',') }} Vnđ</strong>
 			</div>
+			{{--<div style="padding-left: 25%;" class="view-more">--}}
+
+				{{--{!!$userData->links()!!}--}}
+
+			{{--</div>--}}
 
 		</div>
 	</div>
