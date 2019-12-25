@@ -26,6 +26,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/dang-nhap-mobile',
         '/times-call',
         '/times-call-v2',
+        '/times-call-v2-userid',
         '/test-mobile',
         '/facebook-callback',
         '/apiapp',

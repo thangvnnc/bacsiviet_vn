@@ -752,8 +752,22 @@ class ViewController extends Controller
     }
 
     public function apiDanhSachCauHoi(Request $rq) {
-        $speciality_id = $rq->speciality_id;
-        $questions = \App\Question::where('speciality_id', $speciality_id)->select('question_id', 'user_id', 'fullname', 'speciality_id', 'question_title', 'question_content', 'created_at')->paginate(20);
+
+        $userId = $rq->user_id;
+        $user = Users::where('user_id', $userId)->first();
+
+        if ($user->user_type_id == 1) {
+            $questions = \App\Question::where('user_id', $userId)
+                ->select('question_id', 'user_id', 'fullname', 'speciality_id', 'question_title', 'question_content', 'created_at')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(20);
+        }
+        else {
+            $questions = \App\Question::select('question_id', 'user_id', 'fullname', 'speciality_id', 'question_title', 'question_content', 'created_at')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(20);
+        }
+
         return $questions;
     }
 

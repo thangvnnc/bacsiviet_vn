@@ -145,6 +145,7 @@ Route::post('/test-mobile','HomeController@testMobile');
 Route::post('/dang-nhap','HomeController@postDangnhap');
 Route::post('/times-call','HomeController@timesCall');
 Route::post('/times-call-v2','HomeController@timesCallV2');
+Route::post('/times-call-v2-userid','HomeController@timesCallV2WithUserId');
 
 //social login
 Route::get('/redirect/{social}', 'Auth\LoginController@redirect');
@@ -238,6 +239,7 @@ Route::post('/api/danh-sach/tinh-thanh',    'HomeController@apiDanhSachTinhThanh
 
 Route::get('/api/update/version',    'HomeController@apiVersion');
 Route::post('/api/thanh-toan-tin-nhan',    'HomeController@thanhToanTinNhan');
+Route::post('/api/thanh-toan-tin-nhan-2',    'HomeController@thanhToanTinNhan2');
 
 ////////////////////////////////////////////// v2 ///////////////////////////////////////////////////////
 Route::post('/v2/dang-nhap', 'ViewController@postDangnhap');

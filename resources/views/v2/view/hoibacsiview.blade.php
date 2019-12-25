@@ -77,6 +77,11 @@ $(document).ready(function(){
     <div class="hbsv-cnt">
         <div class="hbsv-cntl">
             <article>
+                <img style="max-width: 640px;
+                max-height: 480px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;" src="https://medixlink.com/public/images/{{$question->question_id}}"/>
                 <div class="quest" >
                     <div class="post-meta-dt1">
                         <span class="user1">

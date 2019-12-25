@@ -1,4 +1,7 @@
-﻿<!doctype html>
+﻿<?php
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+?>
+<!doctype html>
 <html prefix="og: http://ogp.me/ns#">
 <head prefix="og: http://ogp.me/ns#">
     <link rel="stylesheet" href="/public/v2/css/bootstrap.min.css">

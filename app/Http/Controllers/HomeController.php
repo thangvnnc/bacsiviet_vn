@@ -1415,7 +1415,6 @@ class HomeController extends Controller
 
     public function timesCall(Request $rq)
     {
-
         $user_email = $rq->get('user_email');
         $doctor_email = $rq->get('doctor_email');
         $times = $rq->get('times');
@@ -1483,6 +1482,92 @@ class HomeController extends Controller
         if (empty($user_type_id)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'user_type_id is not required'));
 
         $qty = 0;
+
+        $calltime = new Calltime();
+        $calltime->user_email = $user_email;
+        $calltime->doctor_email = $doctor_email;
+        $calltime->type = 0;
+
+        try {
+            $qty = doubleval($times);
+            if ($qty <= 0) {
+                return json_encode(array('isSucess' => false, 'balance' => 0, 'msg' => 'Sai định dạng dữ liệu!'), JSON_UNESCAPED_UNICODE);
+            }
+        } catch (Exception $exception) {
+            return json_encode(array('isSucess' => false, 'balance' => 0, 'msg' => 'Sai định dạng dữ liệu!'), JSON_UNESCAPED_UNICODE);
+        }
+        $calltime->times = $qty;
+        $unit = \App\Config::where('id', 2)->first();
+        $unit = (!empty($unit)) ? intval($unit->content) : 1000;
+
+        // Kiểm tra d
+        if($user_type_id != null)
+        {
+            $userRecv = Users::where('email', $doctor_email)->first();
+            if($user_type_id == 2)
+            {
+                $doctorItem = Doctor::where('user_id', $userRecv->user_id)->first();
+
+                if ($doctorItem->price != null)
+                {
+                    $unit = $doctorItem->price;
+                }
+            }
+            else if ($user_type_id == 3)
+            {
+                $clinicItem = Clinic::where('user_id', $userRecv->user_id)->first();
+                if ($clinicItem->price != null)
+                {
+                    $unit = $clinicItem->price;
+                }
+            }
+        }
+
+        $calltime->unit = $unit;
+        if ($calltime->save()) {
+            // Thắng add 20181107 start
+            $patient = \App\Patient::where('email', $user_email)->first();
+            if ($patient == null) {
+                return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'Không tìm thấy thông tin tài khoản!'), JSON_UNESCAPED_UNICODE);
+            }
+
+            $patient->minusTimeV2($unit, $qty);
+            $patient->save();
+            if($patient->balance < $unit) {
+                $patient->can_chat = 0;
+                $patient->can_call_audio = 0;
+                $patient->can_call_video = 0;
+                $patient->save();
+                $user = \App\Users::where('email', $user_email)->first();
+                $user->paid = 0;
+                $user->save();
+            }
+            // Thắng add 20181107 end
+
+            return json_encode(array('unit'=>$unit, 'isSave' => true, 'balance' => $patient->balance, 'msg' => 'Lưu thành công'));
+        } else {
+            return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'Lưu thất bại'));
+        }
+
+    }
+
+    public function timesCallV2WithUserId(Request $rq)
+    {
+        $user_id = $rq->get('user_id');
+        $user_doctor_id = $rq->get('user_doctor_id');
+        $uId = Users::where('user_id', $user_id)->first();
+        $đI = Users::where('user_id', $user_doctor_id)->first();
+
+        $user_email = $uId->email;
+        $doctor_email = $đI->email;
+        $user_type_id = $rq->get('user_type_id');
+        $times = $rq->get('times');
+
+        if (empty($user_email)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'user_email is not required'));
+        if (empty($doctor_email)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'doctor_email is not required'));
+        if (empty($times)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'Times is not required'));
+        if (empty($user_type_id)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'user_type_id is not required'));
+
 
         $calltime = new Calltime();
         $calltime->user_email = $user_email;
@@ -2631,6 +2716,68 @@ class HomeController extends Controller
     {
         $user_email = $rq->get('user_email');
         $doctor_email = $rq->get('doctor_email');
+        $times = $rq->get('count');
+
+        if (empty($user_email)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'user_email is not required'));
+        if (empty($doctor_email)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'doctor_email is not required'));
+        if (empty($times)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'Times is not required'));
+
+        $qty = 0;
+
+        $calltime = new Calltime();
+        $calltime->type = 1;
+        $calltime->user_email = $user_email;
+        $calltime->doctor_email = $doctor_email;
+
+        try {
+            $qty = doubleval($times);
+            if ($qty <= 0) {
+                return json_encode(array('isSucess' => false, 'balance' => 0, 'msg' => 'Sai định dạng dữ liệu!'), JSON_UNESCAPED_UNICODE);
+            }
+        } catch (Exception $exception) {
+            return json_encode(array('isSucess' => false, 'balance' => 0, 'msg' => 'Sai định dạng dữ liệu!'), JSON_UNESCAPED_UNICODE);
+        }
+        $calltime->times = $qty;
+        $unit = \App\Config::where('id', 3)->first();
+        $unit = (!empty($unit)) ? intval($unit->content) : 1000;
+
+        $calltime->unit = $unit;
+        if ($calltime->save()) {
+            // Thắng add 20181107 start
+            $patient = \App\Patient::where('email', $user_email)->first();
+            if ($patient == null) {
+                return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'Không tìm thấy thông tin tài khoản!'), JSON_UNESCAPED_UNICODE);
+            }
+
+            $patient->minusTimeMessage($qty);
+            $patient->save();
+            if($patient->balance < $unit) {
+                $patient->can_chat = 0;
+                $patient->can_call_audio = 0;
+                $patient->can_call_video = 0;
+                $patient->save();
+                $user = \App\Users::where('email', $user_email)->first();
+                $user->paid = 0;
+                $user->save();
+            }
+            // Thắng add 20181107 end
+
+            return json_encode(array('isSave' => true, 'balance' => $patient->balance, 'msg' => 'Lưu thành công'));
+        } else {
+            return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'Lưu thất bại'));
+        }
+    }
+
+    public function thanhToanTinNhan2(Request $rq)
+    {
+        $user_id = $rq->get('user_id');
+        $user = Users::where('user_id', $user_id)->first();
+        $user_email = $user->email;
+
+        $userDoctorId = $rq->get('doctor_user_id');
+        $doctor = Users::where('user_id', $userDoctorId)->first();
+
+        $doctor_email = $doctor->email;
         $times = $rq->get('count');
 
         if (empty($user_email)) return json_encode(array('isSave' => false, 'balance' => 0, 'msg' => 'user_email is not required'));

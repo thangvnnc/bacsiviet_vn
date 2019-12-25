@@ -5,7 +5,7 @@
             <div class="span span2 alone @if(Session::get('user') != null) h-center @endif">
                 <div class="middle-item">
                     <div><img class="center" src="public/v2/img/home_two_mobiles_en.png" alt="">
-                        <p class="text-center"><h2>Tải ứng dụng để chat và liên hệ trực tiếp với bác sĩ</h2></p>
+                        <p class="text-center"><h2>Tải ứng dụng để chat và liên hệ trực tiếp với bác sĩ hoặc liên hệ hotline/zalo 0393167234</h2></p>
                         <div class="apps clr middle-item">
                             <a href="https://itunes.apple.com/us/app/medixlink/id1443310734?ls=1&amp;mt=8"><img
                                         src="public/v2/img/appstore.svg" alt=""></a>
